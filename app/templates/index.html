@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+
+  {% block title %}
+  <title>BrailleRAP portal</title>
+  {% endblock %}
+
+  {% block styles %}
+    <link rel="stylesheet" type="text/css" href="static/index.css">
+  {% endblock %}
+</head>
+
+<body class="bg-backgnd h-full w-full">
+    
+
+{% block content %}
+<div class="flex flex-col bg-backgnd w-full h-full items-center gap-3">
+  <h1>BrailleRAP portal</h1>
+  <div class="w-2/3 flex flex-col items-center">
+    <p>AccessBrailleRAP</p>
+    <a href="https://www.braillerap.org" class="w-full">
+    <button class="btn btn-blue w-full" >AccessBrailleRAP</button>
+    </a>
+    <p>DesktopBrailleRAP</p>
+    <a href="/desktopbrap/index.html" class="w-full">
+    <button class="btn btn-blue w-full" >DesktopBrailleRAP</button>
+    </a>
+    <p>TestBrailleRAP</p>
+  <button disabled="true" class="btn btn-blue w-full" >TestBrailleRAP</button>
+  
+  </div>
+</div>
+{% endblock %}
+</body>
+</html>

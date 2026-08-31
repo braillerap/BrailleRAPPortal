@@ -1,0 +1,34 @@
+
+{% block title %}This is an example page{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" type="text/css" href="static/bootstrap.css">
+{% endblock %}
+
+
+
+{% block content %}
+<div class="container-fluid">
+  <h1>Process list !!!</h1>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Process</th>
+      <th>Command line</th>
+      <th>CPU</th>
+    </tr>
+    </thead>
+    <tbody>
+      {% for p in plist %}
+        <tr>
+          {% for d in p %}
+            <td>
+            {{d}}
+            </td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

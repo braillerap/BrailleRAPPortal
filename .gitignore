@@ -1,0 +1,22 @@
+app/__pycache__
+/__pycache__
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+#python
+/venv
+/translatevenv
+
+# testing
+/coverage
+
+# production
+/build
+/dist
+app/utils/__pycache__/
+package-lock.json
+app/static/desktopbrap/
+
