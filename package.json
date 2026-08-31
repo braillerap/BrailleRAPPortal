@@ -8,10 +8,11 @@
   "scripts": {
     "clean": "rimraf  --glob \"./app/static/desktopbrap/*\"",
     "update": "npx cpx -v \\Users\\sgngo\\home\\DesktopBrailleRAP.github\\build\\**  \\Users\\sgngo\\home\\brailleraprework\\BrailleRAPPortal\\app\\static\\desktopbrap\\",
+    "desktop": "npm --prefix ./reactapp/DesktopBrailleRAP run buildportal",
     "tailwindbuildlocal": "npx tailwindcss -i tailwind/style.css -c tailwind/tailwind.config.js -o ./app/static/index.css",
     "tailwindbuildmini": "npx tailwindcss -i tailwind/style.css -c tailwind/tailwind.config.js -o ./app/static/index.css --minify",
     "tailwindwatch": "npx tailwindcss -i tailwind/style.css -c tailwind/tailwind.config.js -o ./app/static/index.css --watch",
-    "build": "npm-run-all tailwindbuildmini clean update",
+    "build": "npm-run-all tailwindbuildmini clean desktop update",
     "flasklaunch":"python portal.py",
     "start":"npm-run-all build flasklaunch"
   }
