@@ -6,6 +6,7 @@
     "tailwindcss": "^4.3.3"
   },
   "scripts": {
+    "gitdesktop":"git -C ./reactapp/DesktopBrailleRAP/  pull",
     "clean": "rimraf  --glob \"./app/static/desktopbrap/*\"",
     "update": "npx cpx -v ./reactapp/DesktopBrailleRAP/build/**  ./app/static/desktopbrap/",
     "desktop": "npm --prefix ./reactapp/DesktopBrailleRAP run buildportal",
@@ -14,6 +15,6 @@
     "tailwindwatch": "npx tailwindcss -i tailwind/style.css -c tailwind/tailwind.config.js -o ./app/static/index.css --watch",
     "build": "npm-run-all tailwindbuildmini clean desktop update",
     "flasklaunch":"python portal.py",
-    "start":"npm-run-all build flasklaunch"
+    "start":"npm-run-all gitdesktop build flasklaunch"
   }
 }
