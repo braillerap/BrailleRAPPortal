@@ -2,11 +2,9 @@ import os
 import json
 import time
 import serial.tools.list_ports
-from app.local_if import PrintStatus, SerialPrint
 from app import app
-
+from app.local_if import PrintStatus, SerialPrint
 from flask import render_template, flash, redirect, url_for, send_from_directory, request
-from app.myform import MyForm
 from app.utils.ListProcess import ListProcess
 
 
@@ -50,7 +48,53 @@ desktop_run_options = {
     "direct_print": "",
 }
 
+desktopbrap_service = "desktopbraillerap"
+
 local_ifx = SerialPrint ()
+
+def get_parameter_fname (service):
+    return app.static_folder + "/param/" + service + ".json"
+
+def save_parameters(service, paramdict):
+        """Save parameters in local json file"""
+        try:
+            print("data", paramdict)
+            print("json", json.dumps(paramdict))
+            fpath = get_parameter_fname(service)
+            with open(fpath, "w", encoding="utf-8") as of:
+                json.dump(paramdict, of)
+
+        except Exception as e:
+            print(e)
+
+@app.route('/local/gcode_set_parameters', methods=['GET', 'POST'])
+def gcode_set_parameters():
+    """Set parameters value"""
+    if request.method == "POST":
+        print(request.json)
+        print("request.json type", type(request.json))
+        aparam = request.json
+        param = aparam["options"]
+
+        print("parameters", aparam, type(aparam))
+        if aparam['service'] == "desktopbraillerap":
+            try:
+                for k, v in param.items():
+                    if k in desktop_app_options:
+                        desktop_app_options[k] = v
+
+                save_parameters(aparam["service"], desktop_app_options)
+            except Exception as e:
+                print(e)
+        
+        status = PrintStatus ()
+        response = app.response_class(
+                        response=json.dumps(status),
+                        status=200,
+                        mimetype='application/json'
+                    )
+            
+        return response
 
 @app.route('/local/gcode_print', methods=['GET', 'POST'])
 def gcode_print ():
@@ -136,8 +180,20 @@ def gcode_get_serial ():
 
 @app.route('/desktopbrap/local/get_parameters')
 def desktop_get_parameters():
+    try:
+        fpath = get_parameter_fname(desktopbrap_service)
+        print ("loading param from:", fpath)
+        with open(fpath, "r", encoding="utf-8") as inf:
+            data = json.load(inf)
+            for k, v in data.items():
+                if k in desktop_app_options:
+                    desktop_app_options[k] = v
 
-    print ("backend get parameters: ", json.dumps(desktop_app_options))
+    except Exception as e:
+        print(e)
+
+    print ("backend get parameters: ", json.dumps(desktop_app_options)) 
+
     response = app.response_class(
         response=json.dumps(desktop_app_options),
         status=200,
@@ -146,7 +202,7 @@ def desktop_get_parameters():
     return response
 
 @app.route('/desktopbrap/local/get_runtime_options')
-def desktop_get_optons():
+def desktop_get_options():
 
     print ("backend get options: ", json.dumps(desktop_run_options))
     response = app.response_class(
@@ -156,14 +212,16 @@ def desktop_get_optons():
     )
     return response
 
-    
+@app.route ('/desktopbrap/parameter')
+def desktop_redirect_to_root():
+    return redirect("/desktopbrap/index.html")
 
 @app.route('/desktopbrap/static/media/<path>')
 @app.route('/desktopbrap/static/css/<path>')
 @app.route('/desktopbrap/static/js/<path>')
 @app.route('/desktopbrap/<path:path>')
 @app.route('/desktopbrap/')
-def serve(path=""):
+def desktop_serve(path=""):
     print ("path=", path, "request ", request.path, "try folder ", app.static_folder + request.path)
     
     if path != "" and os.path.exists(app.static_folder + request.path):
