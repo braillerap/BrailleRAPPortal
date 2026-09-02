@@ -21,3 +21,4 @@ package-lock.json
 app/static/desktopbrap/
 
 app/static/param/desktopbraillerap.json
+.env
