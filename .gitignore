@@ -22,3 +22,4 @@ app/static/desktopbrap/
 
 app/static/param/desktopbraillerap.json
 .env
+app/static/index.css
