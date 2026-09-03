@@ -24,11 +24,17 @@ class PrintStatus:
     def getjson (self):
         return json.dumps (self.status)
     
-
+COM_TIMEOUT =   5  #Communication timeout with device controller (Marlin)
 class SerialPrint:
     def __init__(self):
         self.serial_status = SerialStatus.Ready
         self.cancel_print = False
+
+    def remove_comment(self, string):
+        """Remove comments from GCode if any"""
+        if string.find(';') == -1:
+            return string
+        return string[:string.index(';')]
         
     def PrintGcode(self, gcode, comport):
         
@@ -98,7 +104,6 @@ class SerialPrint:
         return status.getjson ()
 
     def CancelPrint(self):
-        global cancel_print
-        cancel_print = True
-        print ("Printing cenceled")
+        self.cancel_print = True
+        print ("Printing canceled")
         return

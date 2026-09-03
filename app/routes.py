@@ -126,6 +126,7 @@ def gcode_cancelprint ():
     if request.method == "POST":
         gcode = request.json
         print (gcode)
+        local_ifx.CancelPrint ()
         status = {"error":0}
         
     response = app.response_class(
@@ -213,6 +214,7 @@ def desktop_get_options():
     return response
 
 @app.route ('/desktopbrap/parameter')
+@app.route ('/desktopbrap/print')
 def desktop_redirect_to_root():
     return redirect("/desktopbrap/index.html")
 
