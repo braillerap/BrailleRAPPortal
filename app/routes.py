@@ -8,7 +8,7 @@ from flask import render_template, flash, redirect, url_for, send_from_directory
 from app.utils.ListProcess import ListProcess
 
 
-# main app user option
+# main app user option for desktop braillerap
 desktop_app_options = {
     "comport": "COM1",
     "brailletbl": "70",
@@ -89,7 +89,7 @@ def gcode_set_parameters():
         
         status = PrintStatus ()
         response = app.response_class(
-                        response=json.dumps(status),
+                        response=json.dumps(status.getjson()),
                         status=200,
                         mimetype='application/json'
                     )
