@@ -59,11 +59,13 @@ desktop_run_options = {
 desktopbrap_service = "desktopbraillerap"
 
 local_ifx = SerialPrint ()
+db.init_app(app)
 login_manager.init_app(app)
 login_manager.login_view = "login"
 login_manager.login_message = "Merci de vous connecter pour accéder à cette page."
 
-
+with app.app_context():
+        db.create_all()
 
    
 
