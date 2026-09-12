@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Register user{% endblock %}
+{% block content %}
+<div >
+  <h1>Register user</h1>
+  <p >The first user will have administrator role</p>
+
+  <form method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <div >
+      {{ form.username.label }}
+      {{ form.username(autofocus=true) }}
+      {% if form.username.errors %}
+      <ul class="text-red-500">{% for e in form.username.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+      {% endif %}
+    </div>
+    
+    <div >
+      {{ form.password.label }}
+      {{ form.password() }}
+      <div >8 caractères minimum.</div>
+      {% if form.password.errors %}
+      <ul class="text-red-500">{% for e in form.password.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+      {% endif %}
+    </div>
+    <div >
+      {{ form.confirm.label }}
+      {{ form.confirm() }}
+      {% if form.confirm.errors %}
+      <ul class="text-red-500">{% for e in form.confirm.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+      {% endif %}
+    </div>
+    {{ form.submit() }}
+  </form>
+
+  <p style="margin-top:24px; margin-bottom:0;">
+    Déjà inscrit ? <a href="{{ url_for('login') }}">Se connecter</a>
+  </p>
+</div>
+{% endblock %}

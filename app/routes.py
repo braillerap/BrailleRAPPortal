@@ -2,11 +2,19 @@ import os
 import json
 import time
 import serial.tools.list_ports
+from functools import wraps
 from app import app
 from app.local_if import PrintStatus, SerialPrint
 from flask import render_template, flash, redirect, url_for, send_from_directory, request
+from flask_login import (
+    current_user,
+    login_required,
+    login_user,
+    logout_user,
+)
+from app.forms import LoginForm, RegisterForm, UserCreateForm, UserEditForm
 from app.utils.ListProcess import ListProcess
-
+from app.database.models import db, login_manager, User, USER_ROLE, ADMIN_ROLE
 
 # main app user option for desktop braillerap
 desktop_app_options = {
@@ -51,6 +59,13 @@ desktop_run_options = {
 desktopbrap_service = "desktopbraillerap"
 
 local_ifx = SerialPrint ()
+login_manager.init_app(app)
+login_manager.login_view = "login"
+login_manager.login_message = "Merci de vous connecter pour accéder à cette page."
+
+
+
+   
 
 def get_parameter_fname (service):
     return app.static_folder + "/param/" + service + ".json"
@@ -66,6 +81,65 @@ def save_parameters(service, paramdict):
 
         except Exception as e:
             print(e)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return db.session.get(User, int(user_id))
+
+def admin_required(view_func):
+    @wraps(view_func)
+    def wrapped(*args, **kwargs):
+        if not current_user.is_authenticated or not current_user.is_admin:
+            abort(403)
+        return view_func(*args, **kwargs)
+    return wrapped
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for("index"))
+
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data.strip()).first()
+        if user is None or not user.check_password(form.password.data):
+            flash("Identifiants invalides.", "error")
+        elif not user.is_active_account:
+            flash("Ce compte a été désactivé.", "error")
+        else:
+            login_user(user)
+            flash(f"Bienvenue, {user.username} !", "success")
+            next_page = request.args.get("next")
+            return redirect(next_page or url_for("index"))
+
+    return render_template("login.html", form=form)
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for("index"))
+
+    form = RegisterForm()
+    if form.validate_on_submit():
+        if User.query.filter_by(username=form.username.data).first():
+            flash("Ce nom d'utilisateur est déjà pris.", "error")
+            return render_template("register.html", form=form)
+
+        # first user is admin
+        is_first_user = User.query.count() == 0
+        user = User(
+            username=form.username.data.strip(),
+            
+            role=ADMIN_ROLE if is_first_user else USER_ROLE,
+        )
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+
+        flash("Compte créé avec succès. Vous pouvez vous connecter.", "success")
+        return redirect(url_for("login"))
+
+    return render_template("register.html", form=form)
 
 @app.route('/local/gcode_set_parameters', methods=['GET', 'POST'])
 def gcode_set_parameters():
@@ -215,6 +289,12 @@ def desktop_get_options():
 
 @app.route ('/desktopbrap/parameter')
 @app.route ('/desktopbrap/print')
+@app.route ('/desktopbrap/file')
+@app.route ('/desktopbrap/addsvg')
+@app.route ('/desktopbrap/addtext')
+@app.route ('/desktopbrap/position')
+@app.route ('/desktopbrap/pattern')
+@app.route ('/desktopbrap/data')
 def desktop_redirect_to_root():
     return redirect("/desktopbrap/index.html")
 
@@ -234,9 +314,85 @@ def desktop_serve(path=""):
 
 @app.route('/')
 @app.route('/index')
+@login_required
 def index():
     return render_template ('index.html')
 
+@app.route("/users")
+@login_required
+@admin_required
+def users_list():
+    users = User.query.order_by(User.created_at.desc()).all()
+    return render_template("users.html", users=users)
+
+@app.route("/users/<int:user_id>/edit", methods=["GET", "POST"])
+@login_required
+@admin_required
+def user_edit(user_id):
+    user = db.session.get(User, user_id)
+    if user is None:
+        abort(404)
+
+    form = UserEditForm(obj=user)
+    if form.validate_on_submit():
+        duplicate_username = User.query.filter(
+            User.username == form.username.data, User.id != user.id
+        ).first()
+        
+        if duplicate_username:
+            flash("Ce nom d'utilisateur est déjà pris.", "error")
+            return render_template("user_form.html", form=form, user=user)
+
+        user.username = form.username.data.strip()
+        user.role = form.role.data
+        user.is_active_account = form.is_active_account.data
+        if form.new_password.data:
+            user.set_password(form.new_password.data)
+
+        db.session.commit()
+        flash("Utilisateur mis à jour.", "success")
+        return redirect(url_for("users_list"))
+
+    return render_template("user_form.html", form=form, user=user)
+
+@app.route("/users/<int:user_id>/delete", methods=["POST"])
+@login_required
+@admin_required
+def user_delete(user_id):
+    if user_id == current_user.id:
+        flash("Vous ne pouvez pas supprimer votre propre compte.", "error")
+        return redirect(url_for("users_list"))
+
+    user = db.session.get(User, user_id)
+    if user is None:
+        abort(404)
+
+    db.session.delete(user)
+    db.session.commit()
+    flash("Utilisateur supprimé.", "success")
+    return redirect(url_for("users_list"))
+
+@app.route("/profile", methods=["GET", "POST"])
+@login_required
+def profile():
+    form = UserEditForm(obj=current_user)
+    form.role.render_kw = {"disabled": True}  # un utilisateur ne peut pas changer son propre rôle
+    if form.validate_on_submit():
+        duplicate_username = User.query.filter(
+            User.username == form.username.data, User.id != current_user.id
+        ).first()
+        if duplicate_username:
+            flash("Ce nom d'utilisateur est déjà pris.", "error")
+            return render_template("user_form.html", form=form, user=current_user, is_self=True)
+        
+        current_user.username = form.username.data.strip()
+        if form.new_password.data:
+            current_user.set_password(form.new_password.data)
+        db.session.commit()
+        flash("Profil mis à jour.", "success")
+        return redirect(url_for("profile"))
+
+    return render_template("user_form.html", form=form, user=current_user, is_self=True)
 
 
 @app.route("/process")

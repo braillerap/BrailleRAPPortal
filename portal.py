@@ -1,5 +1,8 @@
 from dotenv import dotenv_values
 from app import app
+
+
+
 print (dotenv_values(".env"))
 
 # config secret for csrf flask protection

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Connexion{% endblock %}
+{% block content %}
+<div class="flex flex-col bg-backgnd w-full h-full items-center">
+  <h1>Connexion</h1>
+  <p >Accédez à votre compte pour continuer.</p>
+
+  <form method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <div >
+      {{ form.username.label }}
+      {{ form.username(autofocus=true) }}
+      {% if form.username.errors %}
+      <ul class="text-red-400">{% for e in form.username.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+      {% endif %}
+    </div>
+    <div>
+      {{ form.password.label }}
+      {{ form.password() }}
+      {% if form.password.errors %}
+      <ul class="field-errors">{% for e in form.password.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+      {% endif %}
+    </div>
+    {{ form.submit() }}
+  </form>
+
+  <p class="lede" style="margin-top:24px; margin-bottom:0;">
+    Pas encore de compte ? <a href="{{ url_for('register') }}">Créer un compte</a>
+  </p>
+</div>
+{% endblock %}
