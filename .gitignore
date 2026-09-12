@@ -24,3 +24,4 @@ app/static/param/desktopbraillerap.json
 .env
 app/static/index.css
 app/database/__pycache__/
+app/app.db
