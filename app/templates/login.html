@@ -3,29 +3,29 @@
 {% block content %}
 <div class="flex flex-col bg-backgnd w-full h-full items-center">
   <h1>Connexion</h1>
-  <p >Accédez à votre compte pour continuer.</p>
+  <p >Please log in to continue.</p>
 
-  <form method="post" novalidate>
+  <form method="post" novalidate class="bg-amber-300">
     {{ form.hidden_tag() }}
-    <div >
+    <div class="flex">
       {{ form.username.label }}
-      {{ form.username(autofocus=true) }}
+      {{ form.username(autofocus=true, class_="textedit") }}
       {% if form.username.errors %}
       <ul class="text-red-400">{% for e in form.username.errors %}<li>{{ e }}</li>{% endfor %}</ul>
       {% endif %}
     </div>
-    <div>
+    <div class="flex">
       {{ form.password.label }}
-      {{ form.password() }}
+      {{ form.password(class_="textedit") }}
       {% if form.password.errors %}
-      <ul class="field-errors">{% for e in form.password.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+      <ul class="text-red-400">{% for e in form.password.errors %}<li>{{ e }}</li>{% endfor %}</ul>
       {% endif %}
     </div>
-    {{ form.submit() }}
+    {{ form.submit(class_="btn btn-blue") }}
   </form>
 
-  <p class="lede" style="margin-top:24px; margin-bottom:0;">
-    Pas encore de compte ? <a href="{{ url_for('register') }}">Créer un compte</a>
+  <p style="margin-top:24px; margin-bottom:0;">
+    No login yet ? <a href="{{ url_for('register') }}">Register a new user</a>
   </p>
 </div>
 {% endblock %}

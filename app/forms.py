@@ -20,7 +20,7 @@ class UserCreateForm(FlaskForm):
         "Confirm password",
         validators=[DataRequired(), EqualTo("password", message="Passwords don't match.")],
     )
-    role = SelectField("Rôle", choices=[("user", "User"), ("admin", "Administrateur")])
+    role = SelectField("Role", choices=[("user", "User"), ("admin", "Administrateur")])
     submit = SubmitField("Register user")
 
 

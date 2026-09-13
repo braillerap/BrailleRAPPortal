@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Register user{% endblock %}
 {% block content %}
-<div >
+<div class="flex flex-col bg-backgnd w-full h-full items-center">
   <h1>Register user</h1>
   <p >The first user will have administrator role</p>
 
@@ -9,7 +9,7 @@
     {{ form.hidden_tag() }}
     <div >
       {{ form.username.label }}
-      {{ form.username(autofocus=true) }}
+      {{ form.username(autofocus=true, class_="textedit") }}
       {% if form.username.errors %}
       <ul class="text-red-500">{% for e in form.username.errors %}<li>{{ e }}</li>{% endfor %}</ul>
       {% endif %}
@@ -17,7 +17,7 @@
     
     <div >
       {{ form.password.label }}
-      {{ form.password() }}
+      {{ form.password(class_="textedit") }}
       <div >8 caractères minimum.</div>
       {% if form.password.errors %}
       <ul class="text-red-500">{% for e in form.password.errors %}<li>{{ e }}</li>{% endfor %}</ul>
@@ -25,16 +25,16 @@
     </div>
     <div >
       {{ form.confirm.label }}
-      {{ form.confirm() }}
+      {{ form.confirm(class_="textedit") }}
       {% if form.confirm.errors %}
       <ul class="text-red-500">{% for e in form.confirm.errors %}<li>{{ e }}</li>{% endfor %}</ul>
       {% endif %}
     </div>
-    {{ form.submit() }}
+    {{ form.submit(class_="btn btn-blue") }}
   </form>
 
   <p style="margin-top:24px; margin-bottom:0;">
-    Déjà inscrit ? <a href="{{ url_for('login') }}">Se connecter</a>
+    Already have an account ? <a href="{{ url_for('login') }}">Please login</a>
   </p>
 </div>
 {% endblock %}

@@ -62,7 +62,9 @@ local_ifx = SerialPrint ()
 db.init_app(app)
 login_manager.init_app(app)
 login_manager.login_view = "login"
-login_manager.login_message = "Merci de vous connecter pour accéder à cette page."
+login_manager.login_message = "You must be loggged in to access this page"
+
+
 
 with app.app_context():
         db.create_all()
@@ -115,6 +117,12 @@ def login():
             return redirect(next_page or url_for("index"))
 
     return render_template("login.html", form=form)
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash("You have been logged out.", "success")
+    return redirect(url_for("login"))
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
