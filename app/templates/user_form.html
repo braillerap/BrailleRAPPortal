@@ -1,13 +1,13 @@
 {% extends "base.html" %} {% block title %}<title>BrailleRAP portal</title>{%
 endblock %} {% block content %}
 <div class="flex flex-col items-center w-full">
-  <h1>{{ 'My profile' if is_self else 'Update ' + user.username }}</h1>
+  <h1>{{ 'My profile' if is_self else 'Update user ' + user.username }}</h1>
   <p class="">
     {% if is_self %} Update your profile. {% else %} Update user informations.
     {% endif %}
   </p>
-
-  <div class="flex flex-col">
+  <div class="h-4 md:h8"></div>
+  <div class="flex flex-col text-left rtl:text-right w-4/5 md:w-3/4">
     <form method="post" novalidate>
       {{ form.hidden_tag() }}
       <div class="flex">
@@ -23,12 +23,13 @@ endblock %} {% block content %}
 
       {% if not is_self %}
       <div class="flex">
-        {{ form.role.label(class_="labelelm") }} {{ form.role(class="textedit")
+        {{ form.role.label(class_="labelelm") }} {{ form.role(class="select")
         }}
       </div>
-      <div class="flex">
-        {{ form.is_active_account() }} {{
-        form.is_active_account.label(class_="labelelm") }}
+      <div class="flex flex-row">
+         {{ form.is_active_account.label(class_="labelelm") }}
+        {{ form.is_active_account(class_="px-2 mx-4 bg-red-500") }}
+
       </div>
       {% endif %}
 
@@ -44,10 +45,9 @@ endblock %} {% block content %}
         {% endif %}
       </div>
 
-      <div class="flex flex-row">
-        {{ form.submit(class_="btn btn_blue") }}
-        </div>
-        <div class="flex flex-row">
+      <div class="flex flex-row item-centers mx-auto">
+        {{ form.submit(class_="btn btn-blue") }}
+        
         <a class="btn btn-blue"
           href="{{ url_for('users_list') if not is_self else url_for('index') }}">
           Cancel

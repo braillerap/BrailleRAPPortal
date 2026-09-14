@@ -6,16 +6,16 @@
     <h1>List all users</h1>
     <p class="mb-0">{{ users|length }} Users in database.</p>
   </div>
-  <div class="flex flex-row gap-2">
+  <div class="flex flex-row gap-2 mt-4 lg:mt-8">
   <a class="btn btn-blue" href="{{ url_for('user_create') }}">Add user</a>
   <a class="btn btn-blue" href="{{ url_for('index') }}">Home</a>
   </div>
 </div>
-<div class="h4 lg:h-6"></div>
+<div class="h4 lg:h-8"></div>
 
-<div class="flex min-w-full">
+<div class="flex min-w-full item-centers">
   {% if users %}
-  <table class="w-full table-auto border-2 text-left rtl:text-right">
+  <table class="w-full lg:w-4/5 lg:mx-auto table-auto border-2 text-left rtl:text-right">
     <thead class="bg-btnlightbackgnd">
       <tr>
         <th>User</th>
@@ -25,7 +25,7 @@
         <th>Actions</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="border-2">
       {% for user in users %}
       <tr>
         <td class="font-bold">{{ user.username }}</td>
