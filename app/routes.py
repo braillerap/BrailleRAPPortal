@@ -365,7 +365,9 @@ def user_create():
 @login_required
 @admin_required
 def user_edit(user_id):
+    
     user = db.session.get(User, user_id)
+    print ("user edit", user)
     if user is None:
         abort(404)
 

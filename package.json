@@ -14,7 +14,8 @@
     "tailwindbuildmini": "npx tailwindcss -i tailwind/style.css -c tailwind/tailwind.config.js -o ./app/static/index.css --minify",
     "tailwindwatch": "npx tailwindcss -i tailwind/style.css -c tailwind/tailwind.config.js -o ./app/static/index.css --watch",
     "build": "npm-run-all tailwindbuildmini clean desktop update",
-    "flasklaunch":"python portal.py",
-    "start":"npm-run-all gitdesktop build flasklaunch"
+    "flask":"python portal.py",
+    "tailthon":"npm-run-all tailwindbuildmini flask",
+    "start":"npm-run-all gitdesktop build flask"
   }
 }

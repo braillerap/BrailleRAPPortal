@@ -1,49 +1,59 @@
-{% extends "base.html" %}
-{% block title %}<title>BrailleRAP portal<title>{% endblock %}
-{% block content %}
-<h1>{{ 'My profile' if is_self else 'Update ' + user.username }}</h1>
-<p class="">
-  {% if is_self %}
-  Update your profile.
-  {% else %}
-  Update user informations.
-  {% endif %}
-</p>
-
-<div class="flex flex-col">
-  <form method="post" novalidate>
-    {{ form.hidden_tag() }}
-    <div class="flex">
-      {{ form.username.label(class_="labelelm") }}
-      {{ form.username(class_="textedit") }}
-      {% if form.username.errors %}
-      <ul class="alert alert-danger">{% for e in form.username.errors %}<li>{{ e }}</li>{% endfor %}</ul>
-      {% endif %}
-    </div>
-   
-    {% if not is_self %}
-    <div class="flex">
-      {{ form.role.label(class_="labelelm") }}
-      {{ form.role(class="textedit") }}
-    </div>
-    <div class="flex">
-      {{ form.is_active_account() }}
-      {{ form.is_active_account.label(class_="labelelm") }}
-    </div>
+{% extends "base.html" %} {% block title %}<title>BrailleRAP portal</title>{%
+endblock %} {% block content %}
+<div class="flex flex-col items-center w-full">
+  <h1>{{ 'My profile' if is_self else 'Update ' + user.username }}</h1>
+  <p class="">
+    {% if is_self %} Update your profile. {% else %} Update user informations.
     {% endif %}
+  </p>
 
-    <div class="field">
-      {{ form.new_password.label (class_="labelelm") }}
-      {{ form.new_password(class_="labelelm") }}
-      {% if form.new_password.errors %}
-      <ul class="alert alert-danger">{% for e in form.new_password.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+  <div class="flex flex-col">
+    <form method="post" novalidate>
+      {{ form.hidden_tag() }}
+      <div class="flex">
+        {{ form.username.label(class_="labelelm") }} {{
+        form.username(class_="textedit") }} {% if form.username.errors %}
+        <ul class="alert alert-danger">
+          {% for e in form.username.errors %}
+          <li>{{ e }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+
+      {% if not is_self %}
+      <div class="flex">
+        {{ form.role.label(class_="labelelm") }} {{ form.role(class="textedit")
+        }}
+      </div>
+      <div class="flex">
+        {{ form.is_active_account() }} {{
+        form.is_active_account.label(class_="labelelm") }}
+      </div>
       {% endif %}
-    </div>
 
-    <div class="flex flex-row">
-      {{ form.submit(class_="btn btn_blue") }}
-      <a class="btn btn-blue" href="{{ url_for('users_list') if not is_self else url_for('index') }}">Annuler</a>
-    </div>
-  </form>
+      <div class="flex">
+        {{ form.new_password.label (class_="labelelm") }}
+        {{ form.new_password(class_="textedit") }} 
+        {% if form.new_password.errors %}
+        <ul class="alert alert-danger">
+          {% for e in form.new_password.errors %}
+          <li>{{ e }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+
+      <div class="flex flex-row">
+        {{ form.submit(class_="btn btn_blue") }}
+        </div>
+        <div class="flex flex-row">
+        <a class="btn btn-blue"
+          href="{{ url_for('users_list') if not is_self else url_for('index') }}">
+          Cancel
+          </a>
+      </div>
+    </form>
+  </div>
 </div>
 {% endblock %}
