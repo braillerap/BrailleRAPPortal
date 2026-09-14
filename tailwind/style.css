@@ -262,6 +262,9 @@ h1 {
   @apply font-bold;
 }
 
+a {
+  @apply font-bold underline;
+}
 .toolbar {
   @apply ml-3 mt-0.75 mb-0.5;
 }

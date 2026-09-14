@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Utilisateurs{% endblock %}
+{% block content %}
+<div style="display:flex; align-items:baseline; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+  <div>
+    <h1>List all users</h1>
+    <p class="mb-0">{{ users|length }} Users registered.</p>
+  </div>
+  <a class="btn btn-blue" href="{{ url_for('user_create') }}">New user</a>
+</div>
+<div class="bg-red-200 h-4"></div>
+
+<div class="flex">
+  {% if users %}
+  <table>
+    <thead>
+      <tr>
+        <th>User</th>
+        
+        <th>Role</th>
+        <th>Status</th>
+        <th>Date</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <td class="font-bold">{{ user.username }}</td>
+        
+        <td><span class="font-bold {{ 'badge-admin' if user.is_admin else '' }}">{{ 'admin' if user.is_admin else 'user' }}</span></td>
+        <td>
+          {% if user.is_active_account %}
+          <span class="font-bold">enabled</span>
+          {% else %}
+          <span class="">disabled</span>
+          {% endif %}
+        </td>
+
+        <td>{{ user.created_at.strftime('%d/%m/%Y') if user.created_at else '—' }}</td>
+        
+        <td>
+          <div class="flex flex-row">
+            <a href="{{ url_for('user_edit', user_id=user.id) }}">Update</a>
+            {% if user.id != current_user.id %}
+            <form method="post" action="{{ url_for('user_delete', user_id=user.id) }}"
+                  onsubmit="return confirm('Delete {{ user.username }}  ?');">
+              <button type="submit" class="link">Delete</button>
+            </form>
+            {% endif %}
+          </div>
+        </td>
+
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="">No user registered.</div>
+  {% endif %}
+</div>
+{% endblock %}

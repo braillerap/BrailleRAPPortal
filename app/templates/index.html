@@ -14,12 +14,18 @@
     </a>
     <p>TestBrailleRAP</p>
   <button disabled="true" class="btn btn-blue w-full" >TestBrailleRAP</button>
-  
   </div>
+  
   <div class ="flex flex-col item-centers mt-8">
     <a href="/logout" class="w-full">
       <button class="btn btn-blue w-full" >Logout</button>
     </a>
+
+    {% if 1 %}
+    <a href="/users" class="w-full">
+      <button class="btn btn-blue w-full" >Admin</button>
+    </a>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

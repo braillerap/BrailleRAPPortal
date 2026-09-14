@@ -107,9 +107,9 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data.strip()).first()
         if user is None or not user.check_password(form.password.data):
-            flash("Identifiants invalides.", "error")
+            flash("Incorrect login /password .", "error")
         elif not user.is_active_account:
-            flash("Ce compte a été désactivé.", "error")
+            flash("User is not active.", "error")
         else:
             login_user(user)
             flash(f"Bienvenue, {user.username} !", "success")
@@ -328,12 +328,38 @@ def desktop_serve(path=""):
 def index():
     return render_template ('index.html')
 
+
 @app.route("/users")
 @login_required
 @admin_required
 def users_list():
     users = User.query.order_by(User.created_at.desc()).all()
     return render_template("users.html", users=users)
+
+@app.route("/users/new", methods=["GET", "POST"])
+@login_required
+@admin_required
+def user_create():
+    form = UserCreateForm()
+    if form.validate_on_submit():
+        if User.query.filter_by(username=form.username.data.strip()).first():
+            flash("User already exist.", "error")
+            return render_template("user_create.html", form=form)
+        
+
+        user = User(
+            username=form.username.data.strip(),
+    
+            role=form.role.data,
+        )
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+
+        flash(f"User « {user.username} » Created.", "success")
+        return redirect(url_for("users_list"))
+
+    return render_template("user_create.html", form=form)
 
 @app.route("/users/<int:user_id>/edit", methods=["GET", "POST"])
 @login_required
@@ -348,10 +374,10 @@ def user_edit(user_id):
         duplicate_username = User.query.filter(
             User.username == form.username.data, User.id != user.id
         ).first()
-        
         if duplicate_username:
-            flash("Ce nom d'utilisateur est déjà pris.", "error")
+            flash("User already exist.", "error")
             return render_template("user_form.html", form=form, user=user)
+        
 
         user.username = form.username.data.strip()
         user.role = form.role.data
@@ -360,7 +386,7 @@ def user_edit(user_id):
             user.set_password(form.new_password.data)
 
         db.session.commit()
-        flash("Utilisateur mis à jour.", "success")
+        flash("User profile updated.", "success")
         return redirect(url_for("users_list"))
 
     return render_template("user_form.html", form=form, user=user)
@@ -370,7 +396,7 @@ def user_edit(user_id):
 @admin_required
 def user_delete(user_id):
     if user_id == current_user.id:
-        flash("Vous ne pouvez pas supprimer votre propre compte.", "error")
+        flash("You can't delete your account.", "error")
         return redirect(url_for("users_list"))
 
     user = db.session.get(User, user_id)
@@ -379,27 +405,29 @@ def user_delete(user_id):
 
     db.session.delete(user)
     db.session.commit()
-    flash("Utilisateur supprimé.", "success")
+    flash("User deleted.", "success")
     return redirect(url_for("users_list"))
 
 @app.route("/profile", methods=["GET", "POST"])
 @login_required
 def profile():
     form = UserEditForm(obj=current_user)
-    form.role.render_kw = {"disabled": True}  # un utilisateur ne peut pas changer son propre rôle
+    form.role.render_kw = {"disabled": True}  # user can't change their role
     if form.validate_on_submit():
         duplicate_username = User.query.filter(
             User.username == form.username.data, User.id != current_user.id
         ).first()
+        
         if duplicate_username:
-            flash("Ce nom d'utilisateur est déjà pris.", "error")
+            flash("User already exist.", "error")
             return render_template("user_form.html", form=form, user=current_user, is_self=True)
         
         current_user.username = form.username.data.strip()
+        
         if form.new_password.data:
             current_user.set_password(form.new_password.data)
         db.session.commit()
-        flash("Profil mis à jour.", "success")
+        flash("User profile updated.", "success")
         return redirect(url_for("profile"))
 
     return render_template("user_form.html", form=form, user=current_user, is_self=True)

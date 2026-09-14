@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Register user{% endblock %}
+{% block title %}<title>Register user</title>{% endblock %}
 {% block content %}
 <div class="flex flex-col bg-backgnd w-full h-full items-center">
   <h1>Register user</h1>
@@ -11,29 +11,31 @@
       {{ form.username.label }}
       {{ form.username(autofocus=true, class_="textedit") }}
       {% if form.username.errors %}
-      <ul class="text-red-500">{% for e in form.username.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+      <ul class="alert alert-danger">{% for e in form.username.errors %}<li>{{ e }}</li>{% endfor %}</ul>
       {% endif %}
     </div>
     
     <div >
       {{ form.password.label }}
       {{ form.password(class_="textedit") }}
-      <div >8 caractères minimum.</div>
+      <div >Min length 8 char.</div>
       {% if form.password.errors %}
-      <ul class="text-red-500">{% for e in form.password.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+      <ul class="alert alert-danger">{% for e in form.password.errors %}<li>{{ e }}</li>{% endfor %}</ul>
       {% endif %}
     </div>
     <div >
       {{ form.confirm.label }}
       {{ form.confirm(class_="textedit") }}
       {% if form.confirm.errors %}
-      <ul class="text-red-500">{% for e in form.confirm.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+      <ul class="alert alert-danger">{% for e in form.confirm.errors %}<li>{{ e }}</li>{% endfor %}</ul>
       {% endif %}
     </div>
-    {{ form.submit(class_="btn btn-blue") }}
+    <div>
+    {{ form.submit(class_="btn btn-blue w-full") }}
+    </div>
   </form>
 
-  <p style="margin-top:24px; margin-bottom:0;">
+  <p>
     Already have an account ? <a href="{{ url_for('login') }}">Please login</a>
   </p>
 </div>

@@ -4,13 +4,13 @@ from wtforms.validators import DataRequired, Email, EqualTo, Length, Optional
 
 
 class RegisterForm(FlaskForm):
-    username = StringField("Nom d'utilisateur", validators=[DataRequired(), Length(3, 80)])
-    password = PasswordField("Mot de passe", validators=[DataRequired(), Length(min=8)])
+    username = StringField("User name", validators=[DataRequired(), Length(3, 80)])
+    password = PasswordField("Password", validators=[DataRequired(), Length(min=8)])
     confirm = PasswordField(
         "Confirm password",
         validators=[DataRequired(), EqualTo("password", message="Passwords don't match.")],
     )
-    submit = SubmitField("Créer le compte")
+    submit = SubmitField("Create user")
 
 
 class UserCreateForm(FlaskForm):
