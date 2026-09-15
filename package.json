@@ -7,15 +7,18 @@
   },
   "scripts": {
     "gitdesktop":"git -C ./reactapp/DesktopBrailleRAP/  pull",
+    "gitaccess":"git -C ./reactapp/AccessBrailleRAP/  pull",
     "clean": "rimraf  --glob \"./app/static/desktopbrap/*\"",
-    "update": "npx cpx -v ./reactapp/DesktopBrailleRAP/build/**  ./app/static/desktopbrap/",
+    "update_desktop": "npx cpx -v ./reactapp/DesktopBrailleRAP/build/**  ./app/static/desktopbrap/",
+    "update_access": "npx cpx -v ./reactapp/AccessBrailleRAP/build/**  ./app/static/accessbrap/",
     "desktop": "npm --prefix ./reactapp/DesktopBrailleRAP run buildportal",
+    "access": "npm --prefix ./reactapp/AccessBrailleRAP run buildportal",
     "tailwindbuildlocal": "npx tailwindcss -i tailwind/style.css -c tailwind/tailwind.config.js -o ./app/static/index.css",
     "tailwindbuildmini": "npx tailwindcss -i tailwind/style.css -c tailwind/tailwind.config.js -o ./app/static/index.css --minify",
     "tailwindwatch": "npx tailwindcss -i tailwind/style.css -c tailwind/tailwind.config.js -o ./app/static/index.css --watch",
-    "build": "npm-run-all tailwindbuildmini clean desktop update",
+    "build": "npm-run-all tailwindbuildmini clean desktop access update_desktop update_access",
     "flask":"python portal.py",
     "tailthon":"npm-run-all tailwindbuildmini flask",
-    "start":"npm-run-all gitdesktop build flask"
+    "start":"npm-run-all gitaccess gitdesktop build flask"
   }
 }

@@ -5,7 +5,7 @@ import serial.tools.list_ports
 from functools import wraps
 from app import app
 from app.local_if import PrintStatus, SerialPrint
-from flask import render_template, flash, redirect, url_for, send_from_directory, request
+from flask import render_template, flash, redirect, url_for, send_from_directory, request, abort
 from flask_login import (
     current_user,
     login_required,
@@ -308,6 +308,11 @@ def desktop_get_options():
 def desktop_redirect_to_root():
     return redirect("/desktopbrap/index.html")
 
+@app.route('/accessbrap/static/media/<path>')
+@app.route('/accessbrap/static/css/<path>')
+@app.route('/accessbrap/static/js/<path>')
+@app.route('/accessbrap/<path:path>')
+@app.route('/accessbrap/')
 @app.route('/desktopbrap/static/media/<path>')
 @app.route('/desktopbrap/static/css/<path>')
 @app.route('/desktopbrap/static/js/<path>')
@@ -321,6 +326,11 @@ def desktop_serve(path=""):
         return send_from_directory(app.static_folder + request.path, "")
     else:
         return send_from_directory(app.static_folder + request.path, 'index.html')
+
+@app.route ('/accessbrap/parameter')
+@app.route ('/accessbrap/print')
+def access_redirect_to_root():
+    return redirect("/accessbrap/index.html")
 
 @app.route('/')
 @app.route('/index')
@@ -438,3 +448,11 @@ def profile():
 @app.route("/process")
 def process ():
     return render_template ('process.html', plist=ListProcess())
+
+@app.errorhandler(403)
+def forbidden(_e):
+    return render_template("error.html", code=403, message="Access denied."), 403
+
+@app.errorhandler(404)
+def not_found(_e):
+    return render_template("error.html", code=404, message="Page does not exist."), 404
