@@ -19,8 +19,10 @@ app/__pycache__
 app/utils/__pycache__/
 package-lock.json
 app/static/desktopbrap/
+app/static/accessbrap/
 
 app/static/param/desktopbraillerap.json
+app/static/param/accessbraillerap.json
 .env
 app/static/index.css
 app/database/__pycache__/

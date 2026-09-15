@@ -1,3 +1,6 @@
 [submodule "reactapp/DesktopBrailleRAP"]
 	path = reactapp/DesktopBrailleRAP
 	url = https://github.com/braillerap/DesktopBrailleRAP.git
+[submodule "reactapp/AccessBrailleRAP"]
+	path = reactapp/AccessBrailleRAP
+	url = https://github.com/braillerap/AccessBrailleRAP.git
