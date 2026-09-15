@@ -56,7 +56,29 @@ desktop_run_options = {
     "direct_print": "",
 }
 
+# runtime option for accessbrap
+access_app_options = {
+    "comport": "COM1",
+    "nbcol": "31",
+    "nbline": "24",
+    "linespacing": "0",
+    "brailletbl": "81",
+    "lang": "",
+    "theme": "light",
+    "xmax":"200",
+    "orientation":"0",
+    "offsetx":"1",
+    "offsety":"2.5",
+    "fast":0,
+    "louisfilecheck":"",
+    "backtranslation":"back",
+    "brailleblackalign":"guess",
+    "braillerender":"black",
+    "pagenumbering":"0"
+}
+
 desktopbrap_service = "desktopbraillerap"
+accessbrap_service = "accessbraillerap"
 
 local_ifx = SerialPrint ()
 db.init_app(app)
@@ -117,6 +139,7 @@ def login():
             return redirect(next_page or url_for("index"))
 
     return render_template("login.html", form=form)
+
 @app.route("/logout")
 @login_required
 def logout():
@@ -161,7 +184,7 @@ def gcode_set_parameters():
         param = aparam["options"]
 
         print("parameters", aparam, type(aparam))
-        if aparam['service'] == "desktopbraillerap":
+        if aparam['service'] == desktopbrap_service:
             try:
                 for k, v in param.items():
                     if k in desktop_app_options:
@@ -170,7 +193,15 @@ def gcode_set_parameters():
                 save_parameters(aparam["service"], desktop_app_options)
             except Exception as e:
                 print(e)
-        
+        elif aparam["service"] == accessbrap_service:
+            try:
+                for k, v in param.items():
+                    if k in access_app_options:
+                        access_app_options[k] = v
+
+                save_parameters(aparam["service"], access_app_options)
+            except Exception as e:
+                print(e)
         status = PrintStatus ()
         response = app.response_class(
                         response=json.dumps(status.getjson()),
@@ -281,6 +312,29 @@ def desktop_get_parameters():
 
     response = app.response_class(
         response=json.dumps(desktop_app_options),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@app.route('/accessbrap/local/get_parameters')
+def access_get_parameters():
+    try:
+        fpath = get_parameter_fname(accessbrap_service)
+        print ("loading param from:", fpath)
+        with open(fpath, "r", encoding="utf-8") as inf:
+            data = json.load(inf)
+            for k, v in data.items():
+                if k in access_app_options:
+                    access_app_options[k] = v
+
+    except Exception as e:
+        print(e)
+
+    print ("backend get parameters: ", json.dumps(access_app_options)) 
+
+    response = app.response_class(
+        response=json.dumps(access_app_options),
         status=200,
         mimetype='application/json'
     )
