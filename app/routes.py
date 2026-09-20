@@ -274,6 +274,48 @@ def api_cairosvg_status():
                         )
     return response
 
+@app.route('/local/gettransportdata', methods=['GET', 'POST'])
+@login_required
+def api_gettransportdata ():
+    if request.method == "POST":
+        print(request.json)
+        print("request.json type", type(request.json))
+        aparam = request.json
+        print (aparam)
+        
+        ret = osmbridge.GetTransportData (aparam['linelist'], aparam['drawstation'], 
+                                           aparam['linestrategy'], aparam['polygon'])
+        
+        response = app.response_class(
+                                response=ret,
+                                status=200,
+                                mimetype='application/json'
+                            )
+                    
+        return response
+    return "error"
+
+@app.route('/local/gettransportdatasvg', methods=['GET', 'POST'])
+@login_required
+def api_gettransportdatasvg ():
+    if request.method == "POST":
+        print(request.json)
+        print("request.json type", type(request.json))
+        aparam = request.json
+        print (aparam)
+        
+        ret = osmbridge.GetTransportDataSvg (aparam['linelist'], aparam['drawstation'], 
+                                           aparam['linestrategy'], aparam['polygon'])
+        
+        response = app.response_class(
+                                response=json.dumps(ret),
+                                status=200,
+                                mimetype='application/json'
+                            )
+                    
+        return response
+    return "error"
+
 @app.route('/local/readtransportdata', methods=['GET', 'POST'])
 @login_required
 def api_readtransportdata ():
@@ -294,7 +336,21 @@ def api_readtransportdata ():
         return response
     return "error"
 
+@app.route('/local/gettransportline')
+@login_required
+def api_gettransportline ():
+    ret = osmbridge.GetTransportLines ()
+    response = app.response_class(
+                            response=ret,
+                            status=200,
+                            mimetype='application/json'
+                        )
+                
+    return response
+    
+
 @app.route('/local/readstreetmapdata', methods=['GET', 'POST'])
+@login_required
 def api_readstreetmapdata ():
     if request.method == "POST":
         print(request.json)
@@ -312,6 +368,8 @@ def api_readstreetmapdata ():
                             )
         return response
     return "error"
+
+
 
 @app.route('/local/gcode_set_parameters', methods=['GET', 'POST'])
 @login_required
