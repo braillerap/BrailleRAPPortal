@@ -2,11 +2,11 @@ name: check_node_module
 
 on:
   push:
-    branches: [ main, dev_sgn ]
+    branches: [ main ]
     paths:
       - 'package.json'
   pull_request:
-    branches: [ main, dev_sgn ]
+    branches: [ main ]
     paths:
       - 'package.json'
   workflow_dispatch:
@@ -31,6 +31,9 @@ jobs:
       uses: actions/setup-node@main
       with:
         node-version: ${{ matrix.node-version }}
-
+    
+    - name: Install dependencies
+      run: npm install
+    
     - name: Build
       run: npm run fullbuild
