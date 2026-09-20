@@ -1,6 +1,44 @@
+"""
+  
+\file            routes.py
+\brief           Routes definition for the flask application
+
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Software,
+and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS LICENSED UNDER
+                GNU GENERAL PUBLIC LICENSE
+                    Version 3, 29 June 2007
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+This file is part of BrailleRAPPortal software.
+
+SPDX-FileCopyrightText: 2026 Stephane GODIN <stephane@braillerap.org>
+
+SPDX-License-Identifier: GPL-3.0 
+  
+"""
+
 import os
 import json
-import time
+import sys
 import serial.tools.list_ports
 from functools import wraps
 from app import app
@@ -15,6 +53,7 @@ from flask_login import (
 from app.forms import LoginForm, RegisterForm, UserCreateForm, UserEditForm
 from app.utils.ListProcess import ListProcess
 from app.database.models import db, login_manager, User, USER_ROLE, ADMIN_ROLE
+
 
 # main app user option for desktop braillerap
 desktop_app_options = {
@@ -77,17 +116,51 @@ access_app_options = {
     "pagenumbering":"0"
 }
 
+openstreet_app_options = {
+    
+    "lang": "en",
+    "osmiso639": "fr",
+    "focuspolicy":False,
+    "accesskey":False
+}
+
 desktopbrap_service = "desktopbraillerap"
 accessbrap_service = "accessbraillerap"
+openstreet_service = "openstreettouch"
 
+print ("##################### SYS PATH ################")
+#add python osm processing to python path
+osmpath = os.path.abspath('./reactapp/OpenStreetTouch/')
+sys.path.insert (0, osmpath)
+print ("###############################################")
+#import osm processing module
+
+from app.osmbridge import OSMBridge
+
+
+##########################################################
+# test CAIRO availability
+###########################################################
+cairosvg_available = False
+try:
+    from cairosvg import svg2png
+    cairosvg_available = True
+except:
+    print ("cairosvg not available")
 local_ifx = SerialPrint ()
+osmbridge = OSMBridge ()
+
+# 
+# Init flask app
+#
 db.init_app(app)
 login_manager.init_app(app)
 login_manager.login_view = "login"
 login_manager.login_message = "You must be loggged in to access this page"
 
-
-
+#
+# Create DB if empty
+#
 with app.app_context():
         db.create_all()
 
@@ -108,6 +181,9 @@ def save_parameters(service, paramdict):
         except Exception as e:
             print(e)
 
+##########################################################
+# USER MANAGEMENT
+##########################################################
 @login_manager.user_loader
 def load_user(user_id):
     return db.session.get(User, int(user_id))
@@ -174,7 +250,71 @@ def register():
 
     return render_template("register.html", form=form)
 
+##############################################################
+# portal API
+##############################################################
+@app.route('/local/ISO639_country_code')
+@login_required
+def api_country_code():
+    listiso = osmbridge.GetISO639_country_code ()
+    response = app.response_class(
+                            response=json.dumps(listiso),
+                            status=200,
+                            mimetype='application/json'
+                        )
+    return response
+
+@app.route('/local/cairosvg')
+@login_required
+def api_cairosvg_status():
+    response = app.response_class(
+                            response=json.dumps(cairosvg_available),
+                            status=200,
+                            mimetype='application/json'
+                        )
+    return response
+
+@app.route('/local/readtransportdata', methods=['GET', 'POST'])
+@login_required
+def api_readtransportdata ():
+    if request.method == "POST":
+        print(request.json)
+        print("request.json type", type(request.json))
+        aparam = request.json
+        print (aparam)
+        ret = osmbridge.ReadTransportData (aparam['city'], aparam['type'], 
+                                           aparam['iso639_city_code'], aparam['place_id'])
+        
+        response = app.response_class(
+                                response=json.dumps(ret),
+                                status=200,
+                                mimetype='application/json'
+                            )
+                    
+        return response
+    return "error"
+
+@app.route('/local/readstreetmapdata', methods=['GET', 'POST'])
+def api_readstreetmapdata ():
+    if request.method == "POST":
+        print(request.json)
+        print("request.json type", type(request.json))
+        aparam = request.json
+        print (aparam)
+                
+        svg = osmbridge.ReadStreetMapData (aparam['latitude'], aparam['longitude'], aparam['radius'], aparam['building'],
+                aparam['footpath'], aparam['polygon'], aparam['includeWater'], aparam['clipping'])
+
+        response = app.response_class(
+                                response=svg,
+                                status=200,
+                                mimetype='image/svg+xml'
+                            )
+        return response
+    return "error"
+
 @app.route('/local/gcode_set_parameters', methods=['GET', 'POST'])
+@login_required
 def gcode_set_parameters():
     """Set parameters value"""
     if request.method == "POST":
@@ -212,6 +352,7 @@ def gcode_set_parameters():
         return response
 
 @app.route('/local/gcode_print', methods=['GET', 'POST'])
+@login_required
 def gcode_print ():
 
     status = PrintStatus ()
@@ -234,6 +375,7 @@ def gcode_print ():
 
 
 @app.route('/local/gcode_cancelprint', methods=['GET', 'POST'])
+@login_required
 def gcode_cancelprint ():
 
     status = {"error":1}
@@ -252,6 +394,7 @@ def gcode_cancelprint ():
     return response        
 
 @app.route('/local/gcode_get_serial')
+@login_required
 def gcode_get_serial ():
     data = []
     try:
@@ -295,6 +438,7 @@ def gcode_get_serial ():
     
 
 @app.route('/desktopbrap/local/get_parameters')
+@login_required
 def desktop_get_parameters():
     try:
         fpath = get_parameter_fname(desktopbrap_service)
@@ -318,6 +462,7 @@ def desktop_get_parameters():
     return response
 
 @app.route('/accessbrap/local/get_parameters')
+@login_required
 def access_get_parameters():
     try:
         fpath = get_parameter_fname(accessbrap_service)
@@ -340,7 +485,32 @@ def access_get_parameters():
     )
     return response
 
+@app.route('/openstreet/local/get_parameters')
+@login_required
+def openstreet_get_parameters():
+    try:
+        fpath = get_parameter_fname(openstreet_service)
+        print ("loading param from:", fpath)
+        with open(fpath, "r", encoding="utf-8") as inf:
+            data = json.load(inf)
+            for k, v in data.items():
+                if k in access_app_options:
+                    access_app_options[k] = v
+
+    except Exception as e:
+        print(e)
+
+    print ("backend get parameters: ", json.dumps(openstreet_app_options)) 
+
+    response = app.response_class(
+        response=json.dumps(openstreet_app_options),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
 @app.route('/desktopbrap/local/get_runtime_options')
+@login_required
 def desktop_get_options():
 
     print ("backend get options: ", json.dumps(desktop_run_options))
@@ -359,9 +529,15 @@ def desktop_get_options():
 @app.route ('/desktopbrap/position')
 @app.route ('/desktopbrap/pattern')
 @app.route ('/desktopbrap/data')
+@login_required
 def desktop_redirect_to_root():
     return redirect("/desktopbrap/index.html")
 
+@app.route('/openstreet/static/media/<path>')
+@app.route('/openstreet/static/css/<path>')
+@app.route('/openstreet/static/js/<path>')
+@app.route('/openstreet/<path:path>')
+@app.route('/openstreet/')
 @app.route('/accessbrap/static/media/<path>')
 @app.route('/accessbrap/static/css/<path>')
 @app.route('/accessbrap/static/js/<path>')
@@ -372,7 +548,8 @@ def desktop_redirect_to_root():
 @app.route('/desktopbrap/static/js/<path>')
 @app.route('/desktopbrap/<path:path>')
 @app.route('/desktopbrap/')
-def desktop_serve(path=""):
+@login_required
+def app_serve(path=""):
     print ("path=", path, "request ", request.path, "try folder ", app.static_folder + request.path)
     
     if path != "" and os.path.exists(app.static_folder + request.path):
@@ -383,9 +560,19 @@ def desktop_serve(path=""):
 
 @app.route ('/accessbrap/parameter')
 @app.route ('/accessbrap/print')
+@login_required
 def access_redirect_to_root():
     return redirect("/accessbrap/index.html")
 
+@app.route ('/openstreet/parameter')
+@app.route ('/openstreet/transport')
+@app.route ('/openstreet/cmap')
+@login_required
+def open_redirect_to_root():
+    return redirect("/openstreet/index.html")
+
+
+    
 @app.route('/')
 @app.route('/index')
 @login_required

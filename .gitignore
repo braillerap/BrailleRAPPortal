@@ -20,10 +20,13 @@ app/utils/__pycache__/
 package-lock.json
 app/static/desktopbrap/
 app/static/accessbrap/
+app/static/openstreet/
 
 app/static/param/desktopbraillerap.json
 app/static/param/accessbraillerap.json
+app/static/param/openstreet.json
 .env
 app/static/index.css
 app/database/__pycache__/
 app/app.db
+

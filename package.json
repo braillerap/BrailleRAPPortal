@@ -8,17 +8,31 @@
   "scripts": {
     "gitdesktop":"git -C ./reactapp/DesktopBrailleRAP/  pull",
     "gitaccess":"git -C ./reactapp/AccessBrailleRAP/  pull",
-    "clean": "rimraf  --glob \"./app/static/desktopbrap/*\"",
+    "gitopenstreet":"git -C ./reactapp/OpenStreetTouch/  pull",
+    "cleandesktop": "rimraf  --glob \"./app/static/desktopbrap/*\"",
+    "cleanaccess": "rimraf  --glob \"./app/static/accessbrap/*\"",
+    "cleanopenstreet": "rimraf  --glob \"./app/static/openstreet/*\"",
+    "clean": "npm-run-all cleandesktop cleanaccess cleanopenstreet",
+
     "update_desktop": "npx cpx -v ./reactapp/DesktopBrailleRAP/build/**  ./app/static/desktopbrap/",
     "update_access": "npx cpx -v ./reactapp/AccessBrailleRAP/build/**  ./app/static/accessbrap/",
+    "update_openstreet": "npx cpx -v ./reactapp/OpenStreetTouch/build/**  ./app/static/openstreet/",
+
+    "npm_desktop": "npm --prefix ./reactapp/DesktopBrailleRAP install",
+    "npm_access": "npm --prefix ./reactapp/AccessBrailleRAP install",
+    "npm_openstreet": "npm --prefix ./reactapp/OpenStreetTouch install",
+    "npm_install": "npm-run-all npm_desktop npm_access npm_openstreet",
     "desktop": "npm --prefix ./reactapp/DesktopBrailleRAP run buildportal",
     "access": "npm --prefix ./reactapp/AccessBrailleRAP run buildportal",
+    "openstreet": "npm --prefix ./reactapp/OpenStreetTouch run buildportal",
     "tailwindbuildlocal": "npx tailwindcss -i tailwind/style.css -c tailwind/tailwind.config.js -o ./app/static/index.css",
     "tailwindbuildmini": "npx tailwindcss -i tailwind/style.css -c tailwind/tailwind.config.js -o ./app/static/index.css --minify",
     "tailwindwatch": "npx tailwindcss -i tailwind/style.css -c tailwind/tailwind.config.js -o ./app/static/index.css --watch",
-    "build": "npm-run-all tailwindbuildmini clean desktop access update_desktop update_access",
+    "build": "npm-run-all tailwindbuildmini clean  desktop access openstreet update_openstreet update_desktop update_access ",
     "flask":"python portal.py",
     "tailthon":"npm-run-all tailwindbuildmini flask",
-    "start":"npm-run-all gitaccess gitdesktop build flask"
+
+    "start":"npm-run-all gitaccess gitdesktop gitopenstreet build flask",
+    "fullbuild":"npm-run-all gitaccess gitdesktop gitopenstreet npm_install build"
   }
 }

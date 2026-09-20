@@ -4,3 +4,6 @@
 [submodule "reactapp/AccessBrailleRAP"]
 	path = reactapp/AccessBrailleRAP
 	url = https://github.com/braillerap/AccessBrailleRAP.git
+[submodule "reactapp/OpenStreetTouch"]
+	path = reactapp/OpenStreetTouch
+	url = https://github.com/braillerap/OpenStreetTouch.git
