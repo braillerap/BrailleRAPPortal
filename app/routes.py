@@ -324,8 +324,8 @@ def api_readtransportdata ():
         print("request.json type", type(request.json))
         aparam = request.json
         print (aparam)
-        ret = osmbridge.ReadTransportData (aparam['city'], aparam['type'], 
-                                           aparam['iso639_city_code'], aparam['place_id'])
+        ret = osmbridge.ReadTransportData (aparam['cityName'], aparam['transportType'], 
+                                           aparam['iso639_city_code'], aparam['placeid'])
         
         response = app.response_class(
                                 response=json.dumps(ret),

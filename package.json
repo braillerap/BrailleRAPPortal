@@ -33,6 +33,7 @@
     "tailthon":"npm-run-all tailwindbuildmini flask",
 
     "start":"npm-run-all gitaccess gitdesktop gitopenstreet build flask",
+    "startopen":"npm-run-all gitopenstreet openstreet update_openstreet flask",
     "fullbuild":"npm-run-all gitaccess gitdesktop gitopenstreet npm_install build"
   }
 }
