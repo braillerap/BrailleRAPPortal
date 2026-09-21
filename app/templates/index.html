@@ -4,36 +4,52 @@
 <div class="flex flex-col w-full h-full items-center">
   <h1 class="text-2xl mb-4">BrailleRAP portal</h1>
   <div class="w-2/3 flex flex-col items-center gap-4">
-    <p>AccessBrailleRAP</p>
-    <a href="/accessbrap/index.html" class="w-full">
-    <button class="btn btn-blue w-full" >AccessBrailleRAP</button>
+    
+   
+    <a href="/accessbrap/index.html" class="btn btn-blue w-full lg:w-2/3 mx-auto text-center">
+      AccessBrailleRAP
     </a>
-    <p>DesktopBrailleRAP</p>
-    <a href="/desktopbrap/index.html" class="w-full">
-    <button class="btn btn-blue w-full" >DesktopBrailleRAP</button>
+    
+    <a href="/desktopbrap/index.html" class="btn btn-blue w-full lg:w-2/3 mx-auto text-center">
+     DesktopBrailleRAP
     </a>
-    <p>OpenStreetTouch</p>
-    <a href="/openstreet/index.html" class="w-full">
-    <button class="btn btn-blue w-full" >OpenStreetTouch</button>
+    
+    <a href="/openstreet/index.html" class="btn btn-blue w-full lg:w-2/3 mx-auto text-center">
+     OpenStreetTouch
     </a>
-    <p>TestBrailleRAP</p>
-  <button disabled="true" class="btn btn-blue w-full" >TestBrailleRAP</button>
+    
+    <a href="/openstreet/index.html" class="btn btn-blue w-full lg:w-2/3 mx-auto text-center" disabled="true">
+    TestBrailleRAP
+    </a>
   </div>
   
-  <div class ="flex flex-col item-centers mt-8">
-    <a href="/logout" class="w-full">
-      <button class="btn btn-blue w-full" >Logout</button>
+  <div class ="flex flex-col md:flex-row item-centers mt-16">
+    <a href="/logout" class="btn btn-blue w-full">
+      Logout
     </a>
-     <a href="/process" class="w-full">
-      <button class="btn btn-blue w-full" >Process</button>
-    </a>
+     
 
-    {% if 1 %}
-    <a href="/users" class="w-full">
-      <button class="btn btn-blue w-full" >Admin</button>
+    {% if current_user %}
+      
+      
+    {% if current_user.is_admin %}  
+    <a href="/users" class="btn btn-blue w-full">
+      Admin
+    </a>
+     <a href="/profile" class="btn btn-blue w-full">
+      Profile
+    </a>
+    {% else %}
+    <a href="/profile" class="btn btn-blue w-full">
+      Profile
     </a>
     {% endif %}
+    {% endif %}
   </div>
+
+  <a href="/process" class="btn btn-blue mx-auto text-center">
+      Process
+    </a>
 </div>
 {% endblock %}
 </body>

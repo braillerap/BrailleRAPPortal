@@ -261,13 +261,16 @@ h3 {
 h1 {
   @apply font-bold;
 }
-
+/*
 a {
   @apply font-bold underline;
 }
+*/
 .toolbar {
   @apply ml-3 mt-0.75 mb-0.5;
 }
+
+
 
 
 .toolbar_active {
@@ -668,3 +671,25 @@ button.close {
   border-color: #54a754;
   background: #60c060;
 }
+.badge {
+  @apply text-sm font-medium px-2 py-1 border-2 rounded-full;
+}
+
+.badge.brand {
+  @apply  text-apptxt border-2 border-btnlightborder;
+}
+.badge.success {
+  @apply text-apptxt border-2 bg-green-400 border-green-700;
+}
+.badge.warning {
+  @apply  text-apptxt border-2 bg-amber-400 border-yellow-700;
+}
+
+.badge.danger {
+  @apply text-red-500 border-2 bg-red-200 border-red-500;
+}
+/*
+bg-danger-soft text-fg-danger-strong text-xs font-medium px-1.5 py-0.5 rounded">Danger</span>
+<span class="bg-success-soft text-fg-success-strong text-xs font-medium px-1.5 py-0.5 rounded">Success</span>
+<span class="bg-warning-soft text-fg-warning text-xs font-medium px-1.5 py-0.5 rounded">Warning</span>
+*/
