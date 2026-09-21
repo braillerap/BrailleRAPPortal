@@ -121,7 +121,8 @@ openstreet_app_options = {
     "lang": "en",
     "osmiso639": "fr",
     "focuspolicy":False,
-    "accesskey":False
+    "accesskey":False,
+    "theme":"normal"
 }
 
 desktopbrap_service = "desktopbraillerap"
@@ -249,6 +250,112 @@ def register():
         return redirect(url_for("login"))
 
     return render_template("register.html", form=form)
+
+@app.route("/users")
+@login_required
+@admin_required
+def users_list():
+    users = User.query.order_by(User.created_at.desc()).all()
+    return render_template("users.html", users=users)
+
+@app.route("/users/new", methods=["GET", "POST"])
+@login_required
+@admin_required
+def user_create():
+    form = UserCreateForm()
+    if form.validate_on_submit():
+        if User.query.filter_by(username=form.username.data.strip()).first():
+            flash("User already exist.", "error")
+            return render_template("user_create.html", form=form)
+        
+
+        user = User(
+            username=form.username.data.strip(),
+    
+            role=form.role.data,
+        )
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+
+        flash(f"User « {user.username} » Created.", "success")
+        return redirect(url_for("users_list"))
+
+    return render_template("user_create.html", form=form)
+
+@app.route("/users/<int:user_id>/edit", methods=["GET", "POST"])
+@login_required
+@admin_required
+def user_edit(user_id):
+    
+    user = db.session.get(User, user_id)
+    print ("user edit", user)
+    if user is None:
+        abort(404)
+
+    form = UserEditForm(obj=user)
+    if form.validate_on_submit():
+        duplicate_username = User.query.filter(
+            User.username == form.username.data, User.id != user.id
+        ).first()
+        if duplicate_username:
+            flash("User already exist.", "error")
+            return render_template("user_form.html", form=form, user=user)
+        
+
+        user.username = form.username.data.strip()
+        user.role = form.role.data
+        user.is_active_account = form.is_active_account.data
+        if form.new_password.data:
+            user.set_password(form.new_password.data)
+
+        db.session.commit()
+        flash("User profile updated.", "success")
+        return redirect(url_for("users_list"))
+
+    return render_template("user_form.html", form=form, user=user)
+
+@app.route("/users/<int:user_id>/delete", methods=["POST"])
+@login_required
+@admin_required
+def user_delete(user_id):
+    if user_id == current_user.id:
+        flash("You can't delete your account.", "error")
+        return redirect(url_for("users_list"))
+
+    user = db.session.get(User, user_id)
+    if user is None:
+        abort(404)
+
+    db.session.delete(user)
+    db.session.commit()
+    flash("User deleted.", "success")
+    return redirect(url_for("users_list"))
+
+@app.route("/profile", methods=["GET", "POST"])
+@login_required
+def profile():
+    form = UserEditForm(obj=current_user)
+    form.role.render_kw = {"disabled": True}  # user can't change their role
+    if form.validate_on_submit():
+        duplicate_username = User.query.filter(
+            User.username == form.username.data, User.id != current_user.id
+        ).first()
+        
+        if duplicate_username:
+            flash("User already exist.", "error")
+            return render_template("user_form.html", form=form, user=current_user, is_self=True)
+        
+        current_user.username = form.username.data.strip()
+        
+        if form.new_password.data:
+            current_user.set_password(form.new_password.data)
+        db.session.commit()
+        flash("User profile updated.", "success")
+        return redirect(url_for("profile"))
+
+    return render_template("user_form.html", form=form, user=current_user, is_self=True)
+
 
 ##############################################################
 # portal API
@@ -636,113 +743,6 @@ def open_redirect_to_root():
 @login_required
 def index():
     return render_template ('index.html')
-
-
-@app.route("/users")
-@login_required
-@admin_required
-def users_list():
-    users = User.query.order_by(User.created_at.desc()).all()
-    return render_template("users.html", users=users)
-
-@app.route("/users/new", methods=["GET", "POST"])
-@login_required
-@admin_required
-def user_create():
-    form = UserCreateForm()
-    if form.validate_on_submit():
-        if User.query.filter_by(username=form.username.data.strip()).first():
-            flash("User already exist.", "error")
-            return render_template("user_create.html", form=form)
-        
-
-        user = User(
-            username=form.username.data.strip(),
-    
-            role=form.role.data,
-        )
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
-
-        flash(f"User « {user.username} » Created.", "success")
-        return redirect(url_for("users_list"))
-
-    return render_template("user_create.html", form=form)
-
-@app.route("/users/<int:user_id>/edit", methods=["GET", "POST"])
-@login_required
-@admin_required
-def user_edit(user_id):
-    
-    user = db.session.get(User, user_id)
-    print ("user edit", user)
-    if user is None:
-        abort(404)
-
-    form = UserEditForm(obj=user)
-    if form.validate_on_submit():
-        duplicate_username = User.query.filter(
-            User.username == form.username.data, User.id != user.id
-        ).first()
-        if duplicate_username:
-            flash("User already exist.", "error")
-            return render_template("user_form.html", form=form, user=user)
-        
-
-        user.username = form.username.data.strip()
-        user.role = form.role.data
-        user.is_active_account = form.is_active_account.data
-        if form.new_password.data:
-            user.set_password(form.new_password.data)
-
-        db.session.commit()
-        flash("User profile updated.", "success")
-        return redirect(url_for("users_list"))
-
-    return render_template("user_form.html", form=form, user=user)
-
-@app.route("/users/<int:user_id>/delete", methods=["POST"])
-@login_required
-@admin_required
-def user_delete(user_id):
-    if user_id == current_user.id:
-        flash("You can't delete your account.", "error")
-        return redirect(url_for("users_list"))
-
-    user = db.session.get(User, user_id)
-    if user is None:
-        abort(404)
-
-    db.session.delete(user)
-    db.session.commit()
-    flash("User deleted.", "success")
-    return redirect(url_for("users_list"))
-
-@app.route("/profile", methods=["GET", "POST"])
-@login_required
-def profile():
-    form = UserEditForm(obj=current_user)
-    form.role.render_kw = {"disabled": True}  # user can't change their role
-    if form.validate_on_submit():
-        duplicate_username = User.query.filter(
-            User.username == form.username.data, User.id != current_user.id
-        ).first()
-        
-        if duplicate_username:
-            flash("User already exist.", "error")
-            return render_template("user_form.html", form=form, user=current_user, is_self=True)
-        
-        current_user.username = form.username.data.strip()
-        
-        if form.new_password.data:
-            current_user.set_password(form.new_password.data)
-        db.session.commit()
-        flash("User profile updated.", "success")
-        return redirect(url_for("profile"))
-
-    return render_template("user_form.html", form=form, user=current_user, is_self=True)
-
 
 @app.route("/process")
 def process ():
