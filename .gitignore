@@ -30,3 +30,4 @@ app/static/index.css
 app/database/__pycache__/
 app/app.db
 
+app/static.zip
