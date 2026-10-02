@@ -165,8 +165,9 @@ login_manager.login_message = "You must be loggged in to access this page"
 with app.app_context():
         db.create_all()
 
-   
-
+#
+# Define some tools
+#
 def get_parameter_fname (service):
     return app.static_folder + "/param/" + service + ".json"
 
@@ -197,6 +198,9 @@ def admin_required(view_func):
         return view_func(*args, **kwargs)
     return wrapped
 
+#
+# Web app endpoint for /login. Display a login page where user can enter login and password.
+#
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
@@ -744,7 +748,7 @@ def open_redirect_to_root():
 def index():
     return render_template ('index.html')
 
-@app.route("/process")
+@app.route("/sysinfo")
 def process ():
     return render_template ('process.html', plist=ListProcess())
 
