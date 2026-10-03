@@ -18,3 +18,13 @@ def ListProcess():
     plist.sort(key=SortPName)
 
     return plist
+
+def SystemInfo():
+    info = {
+        "cpupercent": psutil.cpu_percent(interval=1, percpu=False),
+        "cpustat": psutil.cpu_stats(),
+        "loadavg": psutil.getloadavg(),
+        "virtmem": psutil.virtual_memory(),
+        "swapmem": psutil.swap_memory()
+    }
+    return info

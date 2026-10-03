@@ -51,7 +51,7 @@ from flask_login import (
     logout_user,
 )
 from app.forms import LoginForm, RegisterForm, UserCreateForm, UserEditForm
-from app.utils.ListProcess import ListProcess
+from app.utils.ListProcess import ListProcess, SystemInfo
 from app.database.models import db, login_manager, User, USER_ROLE, ADMIN_ROLE
 
 
@@ -750,7 +750,7 @@ def index():
 
 @app.route("/sysinfo")
 def process ():
-    return render_template ('process.html', plist=ListProcess())
+    return render_template ('process.html', plist=ListProcess(), sysinfo=SystemInfo())
 
 @app.errorhandler(403)
 def forbidden(_e):
