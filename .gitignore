@@ -28,7 +28,8 @@ app/static/param/openstreet.json
 .env
 app/static/index.css
 app/database/__pycache__/
-app/app.db
 
+
+app/app.db
 app/static.zip
 app/brapportal.db
