@@ -8,6 +8,8 @@ app/__pycache__
 
 #python
 /venv
+/venv11
+/venv13
 /translatevenv
 
 # testing
