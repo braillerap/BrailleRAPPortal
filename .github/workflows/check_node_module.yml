@@ -21,14 +21,14 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [24.22.00]
+        node-version: [24]
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@main
 
     - name: Set up Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@main
+      uses: actions/setup-node@v7
       with:
         node-version: ${{ matrix.node-version }}
     
