@@ -52,7 +52,7 @@ from flask_login import (
 )
 from app.forms import LoginForm, RegisterForm, UserCreateForm, UserEditForm
 from app.utils.ListProcess import ListProcess, SystemInfo
-from app.database.models import db, login_manager, User, USER_ROLE, ADMIN_ROLE
+from app.database.models import db, login_manager, User, AppOption, USER_ROLE, ADMIN_ROLE
 
 
 # main app user option for desktop braillerap
@@ -180,6 +180,8 @@ def save_parameters(service, paramdict):
             with open(fpath, "w", encoding="utf-8") as of:
                 json.dump(paramdict, of)
 
+            # db.session.add(user)
+            #        db.session.commit()
         except Exception as e:
             print(e)
 

@@ -15,7 +15,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False, index=True)
     password_hash = db.Column(db.String(255), nullable=False)
-    role = db.Column(db.String(20), nullable=False, default=USER_ROLE)  # "user" ou "admin"
+    role = db.Column(db.String(20), nullable=False, default=USER_ROLE)  # "user" or "admin"
     is_active_account = db.Column(db.Boolean, nullable=False, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -29,10 +29,21 @@ class User(db.Model, UserMixin):
     def is_admin(self) -> bool:
         return self.role == ADMIN_ROLE
 
-    # Flask-Login utilise cette propriété pour savoir si le compte est actif
+    # Flask-Login use is_active to check if user is enabled
     @property
     def is_active(self) -> bool:
         return self.is_active_account
 
     def __repr__(self) -> str:
         return f"<User {self.username}>"
+
+class AppOption(db.Model) :
+    __tablename__ = "options"
+    id = db.Column(db.Integer, primary_key=True)
+    idUser = db.Column(db.Integer, nullable=False)
+    service = db.Column(db.String(80), nullable=False, default="")
+    jsonoption = db.Column(db.String(16384), nullable=False, default="")
+
+    @property
+    def __repr__(self) -> str:
+        return f"<Option {self.id} {self.idUser} {self.service}, {self.jsonoption}>"
