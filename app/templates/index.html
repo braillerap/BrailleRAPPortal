@@ -2,7 +2,11 @@
     
 {% block content %}
 <div class="flex flex-col w-full h-full items-center">
-  <h1 class="text-2xl mb-4">{{portal.name}}</h1>
+  {% if localet %}
+  <h1 class="text-2xl mb-4">{{ localet.get_string ('portal.name') }}</h1>
+  {% else %}
+  <h1 class="text-2xl mb-4">No object </h1>
+  {% endif %}
   <div class="h-8 lg:h-16"></div>
   <div class="w-2/3 flex flex-col items-center gap-4">
     
@@ -19,37 +23,37 @@
      OpenStreetTouch
     </a>
     
+    {#
     <a href="/openstreet/index.html" class="btn btn-blue w-full lg:w-2/3 mx-auto text-center" disabled="true">
     TestBrailleRAP
     </a>
+    #}
   </div>
   
   <div class ="flex flex-col md:flex-row item-centers mt-16">
     <a href="/logout" class="btn btn-blue w-full">
-      Logout
+      {{ localet.get_string ('button.logout' ) }}
     </a>
      
 
     {% if current_user %}
-      
-      
-    {% if current_user.is_admin %}  
-    <a href="/users" class="btn btn-blue w-full">
-      Admin
-    </a>
-     <a href="/profile" class="btn btn-blue w-full">
-      Profile
-    </a>
-    {% else %}
-    <a href="/profile" class="btn btn-blue w-full">
-      Profile
-    </a>
-    {% endif %}
+      {% if current_user.is_admin %}  
+      <a href="/users" class="btn btn-blue w-full">
+        {{ localet.get_string ('button.admin' ) }}
+      </a>
+      <a href="/profile" class="btn btn-blue w-full">
+        {{ localet.get_string ('button.profile' ) }}
+      </a>
+      {% else %}
+      <a href="/profile" class="btn btn-blue w-full">
+        {{ localet.get_string ('button.profile' ) }}
+      </a>
+      {% endif %}
     {% endif %}
   </div>
 
   <a href="/sysinfo" class="btn btn-blue mx-auto text-center">
-      System informations
+      {{ localet.get_string ('sysinfo.title' ) }}
     </a>
 </div>
 {% endblock %}

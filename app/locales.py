@@ -51,13 +51,15 @@ class localei18n:
         
         self.language_list= glob.glob (PATTERN )
         #self.language_list = glob.glob("./languages/*.json")
+        print ('#' * 40)
         print (self.language_list)
+        print ('#' * 40)
         
-        i18n.set('locale', 'en')
+        i18n.set('locale', 'fr')
         i18n.set('fallback', 'en')
         i18n.set('filename_format', '{locale}.{format}')
         i18n.set('skip_locale_root_data', True)
-        i18n.load_path.append(os.path.join(BASE_DIR, './locales'))
+        i18n.load_path.append(os.path.join(BASE_DIR, './languages'))
 
 
     def get_locale_schema (self):
@@ -68,15 +70,10 @@ class localei18n:
             "en":       {"lang":"en", dir:"ltr", "desc":"en - English",             "reverse":False, "data":self.languages['en'] },
             "fr":       {"lang":"fr", dir:'ltr', "desc":'fr - Français',            "reverse":False, "data":self.languages['fr'] },
         }
-    def set_locale (self, str: locale):
+
+    def set_locale (self, locale):
         i18n.set('locale', locale)
 
-    def get_string (self, str: key) -> str:
-            if lang in self.languages:
-                for key in self.languages:
-                    print ("lang:", key)
-                return self.languages[lang]
-    
-            return "??"
+    def get_string (self, key):
+            return i18n.t(key)
 
-init_i18n ()

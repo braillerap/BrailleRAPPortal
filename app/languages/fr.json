@@ -1,4 +1,7 @@
 {
     "portal.name":"Portail BrailleRAP",
-    "sysinfo.title":"Information systemes"
+    "sysinfo.title":"Information systemes",
+     "button.logout": "Déconnexion",
+    "button.admin" : "Administration utilisateurs",
+    "button.profile" : "Mon compte"
 }

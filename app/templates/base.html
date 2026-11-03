@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {% block title %}
-  <title>{{portal.name}}</title>
-  {% endblock %}
+  <title>{{ localet.get_string ('portal.name') }}</title>
+   {% endblock %}
 
   {% block styles %}
     <link rel="stylesheet" type="text/css" href="/static/index.css">

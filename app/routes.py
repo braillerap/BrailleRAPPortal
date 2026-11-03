@@ -44,6 +44,8 @@ from functools import wraps
 from app import app
 from app.local_if import PrintStatus, SerialPrint
 from app.locales import locales
+from app.locales import localei18n
+
 from flask import render_template, flash, redirect, url_for, send_from_directory, request, abort
 from flask_login import (
     current_user,
@@ -141,6 +143,8 @@ from app.osmbridge import OSMBridge
 
 #import locales utility
 localetool = locales()
+testi18 = localei18n ()
+
 current_locale = 'en'
 
 ##########################################################
@@ -750,11 +754,13 @@ def open_redirect_to_root():
 @app.route('/index')
 @login_required
 def index():
-    return render_template ('index.html', **localetool.get_locale(current_locale))
+    testi18.set_locale('fr')
+    return render_template ('index.html', localet=testi18)
 
 @app.route("/sysinfo")
 def process ():
-    return render_template ('process.html', **localetool.get_locale(current_locale), plist=ListProcess(), sysinfo=SystemInfo())
+    testi18.set_locale('en')
+    return render_template ('process.html', localet=testi18, plist=ListProcess(), sysinfo=SystemInfo())
 
 @app.errorhandler(403)
 def forbidden(_e):

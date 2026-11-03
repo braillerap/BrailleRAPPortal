@@ -2,7 +2,9 @@ from flask_wtf import FlaskForm
 from wtforms import BooleanField, PasswordField, SelectField, StringField, SubmitField
 from wtforms.validators import DataRequired, EqualTo, Length, Optional
 
-
+#
+# User registration flask form
+#
 class RegisterForm(FlaskForm):
     username = StringField("User name", validators=[DataRequired(), Length(3, 80)])
     password = PasswordField("Password", validators=[DataRequired(), Length(min=8)])
@@ -13,6 +15,9 @@ class RegisterForm(FlaskForm):
     submit = SubmitField("Create user")
 
 
+#
+# User Creation flask orm
+#
 class UserCreateForm(FlaskForm):
     username = StringField("User name", validators=[DataRequired(), Length(3, 80)])
     password = PasswordField("Password", validators=[DataRequired(), Length(min=8)])
@@ -23,13 +28,18 @@ class UserCreateForm(FlaskForm):
     role = SelectField("Role", choices=[("user", "User"), ("admin", "Administrator")])
     submit = SubmitField("Register user")
 
-
+#
+# User login flask form
+#
 class LoginForm(FlaskForm):
     username = StringField("User name", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Login")
 
 
+#
+# profile edit flask form
+#
 class UserEditForm(FlaskForm):
     username = StringField("User name", validators=[DataRequired(), Length(3, 80)])
     role = SelectField("Role", choices=[("user", "User"), ("admin", "Administrator")])

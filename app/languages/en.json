@@ -1,4 +1,8 @@
 {
     "portal.name":"BrailleRAP Portal",
-    "sysinfo.title":"System informations"
+    "sysinfo.title":"System informations",
+    "button.logout": "Logout",
+    "button.admin" : "Admin",
+    "button.profile" : "Profile"
+
 }
