@@ -1,6 +1,7 @@
 import json
 import glob
 import os
+import i18n
 
 class locales:
     def __init__(self):
@@ -39,3 +40,43 @@ class locales:
             return self.languages[lang]
 
         return "??"
+
+
+class localei18n:
+
+    def __init__(self):
+        self.languages = {}
+        BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+        PATTERN = os.path.join(BASE_DIR, "languages/*.json")
+        
+        self.language_list= glob.glob (PATTERN )
+        #self.language_list = glob.glob("./languages/*.json")
+        print (self.language_list)
+        
+        i18n.set('locale', 'en')
+        i18n.set('fallback', 'en')
+        i18n.set('filename_format', '{locale}.{format}')
+        i18n.set('skip_locale_root_data', True)
+        i18n.load_path.append(os.path.join(BASE_DIR, './locales'))
+
+
+    def get_locale_schema (self):
+        english = self.languages['en']
+        french = self.languages['fr']
+
+        locschema = {
+            "en":       {"lang":"en", dir:"ltr", "desc":"en - English",             "reverse":False, "data":self.languages['en'] },
+            "fr":       {"lang":"fr", dir:'ltr', "desc":'fr - Français',            "reverse":False, "data":self.languages['fr'] },
+        }
+    def set_locale (self, str: locale):
+        i18n.set('locale', locale)
+
+    def get_string (self, str: key) -> str:
+            if lang in self.languages:
+                for key in self.languages:
+                    print ("lang:", key)
+                return self.languages[lang]
+    
+            return "??"
+
+init_i18n ()
