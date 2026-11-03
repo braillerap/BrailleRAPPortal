@@ -43,6 +43,7 @@ import serial.tools.list_ports
 from functools import wraps
 from app import app
 from app.local_if import PrintStatus, SerialPrint
+from app.locales import locales
 from flask import render_template, flash, redirect, url_for, send_from_directory, request, abort
 from flask_login import (
     current_user,
@@ -134,10 +135,13 @@ print ("##################### SYS PATH ################")
 osmpath = os.path.abspath('./reactapp/OpenStreetTouch/')
 sys.path.insert (0, osmpath)
 print ("###############################################")
-#import osm processing module
 
+#import osm processing module
 from app.osmbridge import OSMBridge
 
+#import locales utility
+localetool = locales()
+current_locale = 'en'
 
 ##########################################################
 # test CAIRO availability
@@ -202,7 +206,7 @@ def admin_required(view_func):
 # Web app endpoint for /login. Display a login page where user can enter login and password.
 #
 @app.route("/login", methods=["GET", "POST"])
-def login():
+def login(**localet):
     if current_user.is_authenticated:
         return redirect(url_for("index"))
 
@@ -746,16 +750,16 @@ def open_redirect_to_root():
 @app.route('/index')
 @login_required
 def index():
-    return render_template ('index.html')
+    return render_template ('index.html', **localetool.get_locale(current_locale))
 
 @app.route("/sysinfo")
 def process ():
-    return render_template ('process.html', plist=ListProcess(), sysinfo=SystemInfo())
+    return render_template ('process.html', **localetool.get_locale(current_locale), plist=ListProcess(), sysinfo=SystemInfo())
 
 @app.errorhandler(403)
 def forbidden(_e):
-    return render_template("error.html", code=403, message="Access denied."), 403
+    return render_template("error.html", **localetool.get_locale(current_locale),  code=403, message="Access denied."), 403
 
 @app.errorhandler(404)
 def not_found(_e):
-    return render_template("error.html", code=404, message="Page does not exist."), 404
+    return render_template("error.html", **localetool.get_locale(current_locale), code=404, message="Page does not exist."), 404
