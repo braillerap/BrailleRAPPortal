@@ -136,16 +136,15 @@ print ("##################### SYS PATH ################")
 #add python osm processing to python path
 osmpath = os.path.abspath('./reactapp/OpenStreetTouch/')
 sys.path.insert (0, osmpath)
+for p in sys.path:
+    print (p)
 print ("###############################################")
 
 #import osm processing module
 from app.osmbridge import OSMBridge
 
-#import locales utility
-localetool = locales()
-testi18 = localei18n ()
-
-current_locale = 'en'
+#create locales utility
+localei18 = localei18n ()
 
 ##########################################################
 # test CAIRO availability
@@ -210,11 +209,16 @@ def admin_required(view_func):
 # Web app endpoint for /login. Display a login page where user can enter login and password.
 #
 @app.route("/login", methods=["GET", "POST"])
-def login(**localet):
+def login():
     if current_user.is_authenticated:
         return redirect(url_for("index"))
-
+    print ("creation de LoginForm")
     form = LoginForm()
+    print ("set localei18n in loginform")
+    form.set_localei18 (localei18)
+    print ("set locale to fr")
+    localei18.set_locale('fr')
+
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data.strip()).first()
         if user is None or not user.check_password(form.password.data):
@@ -226,8 +230,8 @@ def login(**localet):
             flash(f"Bienvenue, {user.username} !", "success")
             next_page = request.args.get("next")
             return redirect(next_page or url_for("index"))
-
-    return render_template("login.html", form=form)
+    
+    return render_template("login.html", form=form, locale=localei18)
 
 @app.route("/logout")
 @login_required
@@ -245,7 +249,7 @@ def register():
     if form.validate_on_submit():
         if User.query.filter_by(username=form.username.data).first():
             flash("Ce nom d'utilisateur est déjà pris.", "error")
-            return render_template("register.html", form=form)
+            return render_template("register.html", form=form, locale=localei18)
 
         # first user is admin
         is_first_user = User.query.count() == 0
@@ -261,14 +265,14 @@ def register():
         flash("Compte créé avec succès. Vous pouvez vous connecter.", "success")
         return redirect(url_for("login"))
 
-    return render_template("register.html", form=form)
+    return render_template("register.html", form=form, locale=localei18)
 
 @app.route("/users")
 @login_required
 @admin_required
 def users_list():
     users = User.query.order_by(User.created_at.desc()).all()
-    return render_template("users.html", users=users)
+    return render_template("users.html", users=users, locale=localei18)
 
 @app.route("/users/new", methods=["GET", "POST"])
 @login_required
@@ -278,7 +282,7 @@ def user_create():
     if form.validate_on_submit():
         if User.query.filter_by(username=form.username.data.strip()).first():
             flash("User already exist.", "error")
-            return render_template("user_create.html", form=form)
+            return render_template("user_create.html", form=form, locale=localei18)
         
 
         user = User(
@@ -293,7 +297,7 @@ def user_create():
         flash(f"User « {user.username} » Created.", "success")
         return redirect(url_for("users_list"))
 
-    return render_template("user_create.html", form=form)
+    return render_template("user_create.html", form=form, locale=localei18)
 
 @app.route("/users/<int:user_id>/edit", methods=["GET", "POST"])
 @login_required
@@ -312,7 +316,7 @@ def user_edit(user_id):
         ).first()
         if duplicate_username:
             flash("User already exist.", "error")
-            return render_template("user_form.html", form=form, user=user)
+            return render_template("user_form.html", form=form, user=user, locale=localei18)
         
 
         user.username = form.username.data.strip()
@@ -325,7 +329,7 @@ def user_edit(user_id):
         flash("User profile updated.", "success")
         return redirect(url_for("users_list"))
 
-    return render_template("user_form.html", form=form, user=user)
+    return render_template("user_form.html", form=form, user=user, locale=localei18)
 
 @app.route("/users/<int:user_id>/delete", methods=["POST"])
 @login_required
@@ -356,7 +360,7 @@ def profile():
         
         if duplicate_username:
             flash("User already exist.", "error")
-            return render_template("user_form.html", form=form, user=current_user, is_self=True)
+            return render_template("user_form.html", form=form, user=current_user, is_self=True, locale=localei18)
         
         current_user.username = form.username.data.strip()
         
@@ -366,7 +370,7 @@ def profile():
         flash("User profile updated.", "success")
         return redirect(url_for("profile"))
 
-    return render_template("user_form.html", form=form, user=current_user, is_self=True)
+    return render_template("user_form.html", form=form, user=current_user, is_self=True, locale=localei18)
 
 
 ##############################################################
@@ -698,17 +702,6 @@ def desktop_get_options():
     )
     return response
 
-@app.route ('/desktopbrap/parameter')
-@app.route ('/desktopbrap/print')
-@app.route ('/desktopbrap/file')
-@app.route ('/desktopbrap/addsvg')
-@app.route ('/desktopbrap/addtext')
-@app.route ('/desktopbrap/position')
-@app.route ('/desktopbrap/pattern')
-@app.route ('/desktopbrap/data')
-@login_required
-def desktop_redirect_to_root():
-    return redirect("/desktopbrap/index.html")
 
 @app.route('/openstreet/static/media/<path>')
 @app.route('/openstreet/static/css/<path>')
@@ -735,6 +728,9 @@ def app_serve(path=""):
     else:
         return send_from_directory(app.static_folder + request.path, 'index.html')
 
+#
+# redirection to home when page refesh on browser
+#
 @app.route ('/accessbrap/parameter')
 @app.route ('/accessbrap/print')
 @login_required
@@ -748,24 +744,35 @@ def access_redirect_to_root():
 def open_redirect_to_root():
     return redirect("/openstreet/index.html")
 
+@app.route ('/desktopbrap/parameter')
+@app.route ('/desktopbrap/print')
+@app.route ('/desktopbrap/file')
+@app.route ('/desktopbrap/addsvg')
+@app.route ('/desktopbrap/addtext')
+@app.route ('/desktopbrap/position')
+@app.route ('/desktopbrap/pattern')
+@app.route ('/desktopbrap/data')
+@login_required
+def desktop_redirect_to_root():
+    return redirect("/desktopbrap/index.html")
 
     
 @app.route('/')
 @app.route('/index')
 @login_required
 def index():
-    testi18.set_locale('fr')
-    return render_template ('index.html', localet=testi18)
+    localei18.set_locale('fr')
+    return render_template ('index.html', locale=localei18)
 
 @app.route("/sysinfo")
 def process ():
-    testi18.set_locale('en')
-    return render_template ('process.html', localet=testi18, plist=ListProcess(), sysinfo=SystemInfo())
+    localei18.set_locale('en')
+    return render_template ('process.html', locale=localei18, plist=ListProcess(), sysinfo=SystemInfo())
 
 @app.errorhandler(403)
 def forbidden(_e):
-    return render_template("error.html", **localetool.get_locale(current_locale),  code=403, message="Access denied."), 403
+    return render_template("error.html", locale=localei18,  code=403, message="Access denied."), 403
 
 @app.errorhandler(404)
 def not_found(_e):
-    return render_template("error.html", **localetool.get_locale(current_locale), code=404, message="Page does not exist."), 404
+    return render_template("error.html", locale=localei18, code=404, message="Page does not exist."), 404

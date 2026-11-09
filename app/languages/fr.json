@@ -3,5 +3,13 @@
     "sysinfo.title":"Information systemes",
      "button.logout": "Déconnexion",
     "button.admin" : "Administration utilisateurs",
-    "button.profile" : "Mon compte"
+    "button.profile" : "Mon compte",
+
+     "login.title" : "Connexion",
+     "login.description" : "Veuillez vous connecter pour continuer",
+     "login.notregistered" : "Pas encore de compte ?",
+     "login.registeruser" : "Créer un nouvel utilisateur",
+
+     "userform.selfuser" : "Mon Compte",
+     "userform.updateuser" : "Update User"
 }

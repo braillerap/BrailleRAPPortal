@@ -2,8 +2,8 @@
     
 {% block content %}
 <div class="flex flex-col w-full h-full items-center">
-  {% if localet %}
-  <h1 class="text-2xl mb-4">{{ localet.get_string ('portal.name') }}</h1>
+  {% if locale %}
+  <h1 class="text-2xl mb-4">{{ locale.get_string ('portal.name') }}</h1>
   {% else %}
   <h1 class="text-2xl mb-4">No object </h1>
   {% endif %}
@@ -31,29 +31,29 @@
   </div>
   
   <div class ="flex flex-col md:flex-row item-centers mt-16">
-    <a href="/logout" class="btn btn-blue w-full">
-      {{ localet.get_string ('button.logout' ) }}
+    <a href="/logout" class="btn btn-blue w-full text-center">
+      {{ locale.get_string ('button.logout' ) }}
     </a>
      
 
     {% if current_user %}
       {% if current_user.is_admin %}  
-      <a href="/users" class="btn btn-blue w-full">
-        {{ localet.get_string ('button.admin' ) }}
+      <a href="/users" class="btn btn-blue w-full text-center">
+        {{ locale.get_string ('button.admin' ) }}
       </a>
-      <a href="/profile" class="btn btn-blue w-full">
-        {{ localet.get_string ('button.profile' ) }}
+      <a href="/profile" class="btn btn-blue w-full text-center" >
+        {{ locale.get_string ('button.profile' ) }}
       </a>
       {% else %}
-      <a href="/profile" class="btn btn-blue w-full">
-        {{ localet.get_string ('button.profile' ) }}
+      <a href="/profile" class="btn btn-blue w-full text-center">
+        {{ locale.get_string ('button.profile' ) }}
       </a>
       {% endif %}
     {% endif %}
   </div>
 
   <a href="/sysinfo" class="btn btn-blue mx-auto text-center">
-      {{ localet.get_string ('sysinfo.title' ) }}
+      {{ locale.get_string ('sysinfo.title' ) }}
     </a>
 </div>
 {% endblock %}

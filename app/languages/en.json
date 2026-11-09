@@ -3,6 +3,14 @@
     "sysinfo.title":"System informations",
     "button.logout": "Logout",
     "button.admin" : "Admin",
-    "button.profile" : "Profile"
+    "button.profile" : "Profile",
+
+    "login.title" : "Login",
+    "login.description" : "Please log in to continue",
+    "login.notregistered" : "No login yet ?",
+
+    "userform.selfuser" : "My Profile",
+    "userform.updateuser" : "Modifier l'utilisateur"
+
 
 }

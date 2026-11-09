@@ -6,8 +6,8 @@
 
 {% block content %}
 <div class="flex flex-col bg-backgnd w-full h-full items-center">
-  <h1 class="text-2xl mb-4">Login</h1>
-  <p >Please log in to continue.</p>
+  <h1 class="text-2xl mb-4">{{locale.get_string('login.title')}}</h1>
+  <p >{{locale.get_string('login.description')}}</p>
 
   <form method="post"  class="" novalidate>
     {{ form.hidden_tag() }}
@@ -31,7 +31,7 @@
   </form>
 
   <p >
-    No login yet ? <a href="{{ url_for('register') }}">Register a new user</a>
+    {{locale.get_string('login.notregistered')}} <a class="font-medium text-fg-brand hover:underline" href="{{ url_for('register') }}">{{locale.get_string('login.registeruser')}}</a>
   </p>
 </div>
 {% endblock %}

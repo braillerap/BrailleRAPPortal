@@ -3,7 +3,7 @@ from app import app
 
 print (dotenv_values(".env"))
 
-# config secret for csrf flask protection
+# config secret for csrf flask form protection
 app.config['SECRET_KEY'] = dotenv_values(".env")["SECRET_KEY"]
 
 if __name__ == '__main__':
