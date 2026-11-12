@@ -1,5 +1,9 @@
-app/__pycache__
 /__pycache__
+app/__pycache__
+app/database/__pycache__/
+app/translations/__pycache__
+tests/__pycache__
+
 
 # dependencies
 /node_modules
@@ -31,10 +35,7 @@ app/static/param/accessbraillerap.json
 app/static/param/openstreet.json
 .env
 app/static/index.css
-app/database/__pycache__/
-
 
 app/app.db
 app/static.zip
 app/brapportal.db
-tests/__pycache__

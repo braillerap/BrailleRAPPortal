@@ -461,7 +461,7 @@ button.close {
   padding: 15px;
   margin-bottom: 20px;
   border: 1px solid transparent;
-  border-radius: 4px;
+  border-radius: 0.25rem;
 }
 
 .alert h4 {
@@ -536,9 +536,10 @@ button.close {
 }
 
 .alert-danger {
-  background-color: #f2dede;
+  background-color: #00ff00; /*#f2dede;*/
   border-color: #ebccd1;
-  color: #a94442;
+  color:#00ff00; /* #a94442;*/
+  border-radius: 80px;
 }
 
 .alert-danger hr {
@@ -548,13 +549,13 @@ button.close {
 .alert-danger .alert-link {
   color: #843534;
 }
-
+/*
 .alert {
   border-radius: 0;
   -webkit-border-radius: 0;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.11);
 }
-
+*/
 .alert .sign {
   font-size: 20px;
   vertical-align: middle;

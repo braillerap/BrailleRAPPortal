@@ -43,8 +43,8 @@ import serial.tools.list_ports
 from functools import wraps
 from app import app
 from app.local_if import PrintStatus, SerialPrint
-from app.locales import locales
-from app.locales import localei18n
+from app.translations.locales import locales
+from app.translations.locales import localei18n
 
 from flask import render_template, flash, redirect, url_for, send_from_directory, request, abort
 from flask_login import (
@@ -53,7 +53,7 @@ from flask_login import (
     login_user,
     logout_user,
 )
-from app.forms import LoginForm, RegisterForm, UserCreateForm, UserEditForm
+from app.forms import LoginForm, RegisterForm, UserCreateForm, UserEditForm, forms_set_localei18
 from app.utils.ListProcess import ListProcess, SystemInfo
 from app.database.models import db, login_manager, User, USER_ROLE, ADMIN_ROLE
 
@@ -146,6 +146,8 @@ from app.osmbridge import OSMBridge
 #create locales utility
 localei18 = localei18n ()
 
+forms_set_localei18(localei18)
+
 ##########################################################
 # test CAIRO availability
 ###########################################################
@@ -213,11 +215,12 @@ def login():
     if current_user.is_authenticated:
         return redirect(url_for("index"))
     print ("creation de LoginForm")
-    form = LoginForm()
-    print ("set localei18n in loginform")
-    form.set_localei18 (localei18)
-    print ("set locale to fr")
-    localei18.set_locale('fr')
+    #form = LoginForm()
+    localei18.set_locale('en')
+    form = LoginForm(request.form, meta={'locales': ['en']})
+    
+    
+    
 
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data.strip()).first()
@@ -245,10 +248,12 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for("index"))
 
-    form = RegisterForm()
+    #form = RegisterForm()
+    localei18.set_locale('en')
+    form = RegisterForm(request.form, meta={'locales': ['en']})
     if form.validate_on_submit():
         if User.query.filter_by(username=form.username.data).first():
-            flash("Ce nom d'utilisateur est déjà pris.", "error")
+            flash(localei18.get_string("form.userexist"), localei18.get_string("form.error"))
             return render_template("register.html", form=form, locale=localei18)
 
         # first user is admin

@@ -12,6 +12,7 @@
   <form method="post"  class="" novalidate>
     {{ form.hidden_tag() }}
     <div class="flex flex-row items-center">
+      <p>{{ form.username._value()}}</p>
       {{ form.username.label(class_="labelelm")}}
       {{ form.username(autofocus=true, class_="textedit") }}
       {% if form.username.errors %}
