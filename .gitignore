@@ -39,3 +39,4 @@ app/static/index.css
 app/app.db
 app/static.zip
 app/brapportal.db
+.vscode/settings.json

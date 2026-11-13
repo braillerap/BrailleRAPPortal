@@ -7,7 +7,7 @@
   },
   "scripts": {
     "gitdesktop":"git -C ./reactapp/DesktopBrailleRAP/  pull",
-    "gitaccess":"git -C ./reactapp/AccessBrailleRAP/  pull",
+    "gitaccess":"git -C ./reactapp/AccessBrailleRAP/  pull ",
     "gitopenstreet":"git -C ./reactapp/OpenStreetTouch/  pull",
     "cleandesktop": "rimraf  --glob \"./app/static/desktopbrap/*\"",
     "cleanaccess": "rimraf  --glob \"./app/static/accessbrap/*\"",
