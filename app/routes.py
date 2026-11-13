@@ -364,7 +364,7 @@ def user_delete(user_id):
 @app.route("/profile", methods=["GET", "POST"])
 @login_required
 def profile():
-    form = UserEditForm(obj=current_user)
+    form = UserEditForm(request.form, obj=current_user, meta={'locales': [localei18.get_locale()]} )
     form.role.render_kw = {"disabled": True}  # user can't change their role
     if form.validate_on_submit():
         duplicate_username = User.query.filter(
