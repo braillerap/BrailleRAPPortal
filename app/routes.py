@@ -536,10 +536,10 @@ def gcode_set_parameters():
         elif aparam["service"] == openstreet_service:
             try:
                 for k, v in param.items():
-                    if k in access_app_options:
-                        access_app_options[k] = v
+                    if k in openstreet_app_options:
+                        openstreet_app_options[k] = v
 
-                save_parameters(aparam["service"], access_app_options)
+                save_parameters(aparam["service"], openstreet_app_options)
             except Exception as e:
                 print(e)
 

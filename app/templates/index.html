@@ -5,10 +5,10 @@
   {% if locale %}
   <h1 class="text-2xl mb-4">{{ locale.get_string ('portal.name') }}</h1>
   {% else %}
-  <h1 class="text-2xl mb-4">No object </h1>
+  <h1 class="text-2xl mb-4">No object bizarre</h1>
   {% endif %}
   <div class="h-8 lg:h-16"></div>
-  <div class="w-2/3 flex flex-col items-center gap-4">
+  <div class="w-4/5 md:w-2/3 flex flex-col items-center gap-4">
     
    
     <a href="/accessbrap/index.html" class="btn btn-blue w-full lg:w-2/3 mx-auto text-center">
@@ -38,16 +38,16 @@
 
     {% if current_user %}
       {% if current_user.is_admin %}  
-      <a href="/users" class="btn btn-blue w-full text-center">
-        {{ locale.get_string ('button.admin' ) }}
-      </a>
-      <a href="/profile" class="btn btn-blue w-full text-center" >
-        {{ locale.get_string ('button.profile' ) }}
-      </a>
+        <a href="/users" class="btn btn-blue w-full text-center">
+          {{ locale.get_string ('button.admin' ) }}
+        </a>
+        <a href="/profile" class="btn btn-blue w-full text-center" >
+          {{ locale.get_string ('button.profile' ) }}
+        </a>
       {% else %}
-      <a href="/profile" class="btn btn-blue w-full text-center">
-        {{ locale.get_string ('button.profile' ) }}
-      </a>
+        <a href="/profile" class="btn btn-blue w-full text-center">
+          {{ locale.get_string ('button.profile' ) }}
+        </a>
       {% endif %}
     {% endif %}
   </div>
