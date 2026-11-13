@@ -85,5 +85,5 @@ class localei18n:
             print ('search for key ', key)
             res = i18n.t (key)
             print (key, '=>', res)
-            return i18n.t(res)
+            return i18n.t(key)
 

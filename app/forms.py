@@ -13,16 +13,14 @@ def forms_set_localei18 (localei18t:localei18n):
     localei18 = localei18t
 
 def _ft (key:str) -> str:
-    if localei18 != None:
-        print ("_ft", key, localei18.get_string(key))
-    else:
-        print ("_ft", key)
     return localei18.get_string (key) if localei18 != None else key
 
 class _tr ():
     def __init__(self, key:str):    
         self.key = key
-    def __str__(self):
+
+
+    def __str__(self) -> str:
         return _ft(self.key)
     
 
@@ -105,8 +103,8 @@ class UserCreateForm(FlaskForm):
        _tr("form.user.confirmpassword"),
         validators=[DataRequired(), EqualTo("password", message=_tr("form.user.passwordnotmatch"))],
     )
-    role = SelectField("Role", choices=[("user", "User"), ("admin", "Administrator")])
-    submit = SubmitField("Register user")
+    role = SelectField("Role", choices=[("user", _tr("app.role.user")), ("admin", _tr("app.role.admin"))])
+    submit = SubmitField(_tr ("create.user.register"))
 
 #
 # User login flask form
@@ -121,12 +119,12 @@ class LoginForm(FlaskForm):
 #
 # profile edit flask form
 #
-class UserEditForm(BaseTranslate):
+class UserEditForm(FlaskForm):
     username = StringField("User name", validators=[DataRequired(), Length(3, 80)])
-    role = SelectField("Role", choices=[("user", "User"), ("admin", "Administrator")])
-    is_active_account = BooleanField("Active user")
+    role = SelectField("Role", choices=[("user", _tr("app.role.user")), ("admin", _tr("app.role.admin"))])
+    is_active_account = BooleanField(_tr("useredit.btn.activate"))
     new_password = PasswordField(
-        "New password (leave empty for not changing it)",
+        _tr("useredit.pwd.message"),
         validators=[Optional(), Length(min=8)],
     )
-    submit = SubmitField("Save")
+    submit = SubmitField(_tr("app.btn.save"))

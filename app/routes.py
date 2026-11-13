@@ -289,7 +289,7 @@ def users_list():
 @login_required
 @admin_required
 def user_create():
-    form = UserCreateForm()
+    form = UserCreateForm(request.form, meta={'locales': [localei18.get_locale()]} )
     if form.validate_on_submit():
         if User.query.filter_by(username=form.username.data.strip()).first():
             flash("User already exist.", "error")

@@ -3,12 +3,30 @@
     "sysinfo.title":"System informations",
 
     "app.mustlogin" : "You must be loggged in to access this page",
-    "app.usersuccess" : "Compte créé avec succès. Vous pouvez vous connecter.",
+    "app.usersuccess" : "User account created. You can log in.",
     "app.role.admin" : "Administrator",
     "app.role.user" : "User",
+    "app.home" : "Home",
+    "app.btn.delete" : "Delete",
+    "app.btn.edit" : "Edit",
+    "app.btn.save" : "Save",
+
+    "app.user.enabled" : "enabled",
+    "app.user.disabled" : "disabled",
+
     "button.logout": "Logout",
     "button.admin" : "Admin",
     "button.profile" : "Profile",
+ 
+    "listusers.title" : "List all users",
+    "listusers.description" : "Users in  database",
+    "listusers.nousers" : "No users registered",
+    "listusers.user" : "User", 
+    "listusers.role" : "Role",
+    "listusers.status" : "Status",
+    "listusers.date" : "Date",
+    "listusers.actions" : "Actions",
+    "listusers.btn.adduser" : "Add user",
 
     "login.title" : "Login",
     "login.description" : "Please log in to continue",
@@ -17,6 +35,7 @@
 
     "create.user.title" : "Create User",
     "create.user.description" : "Create a new user",
+    "create.user.register" : "Register user",
 
     "form.createuser" : "Create user",
     "form.user.name" : "User name",
@@ -35,7 +54,8 @@
     "register.user.gologin" : "Please login",
 
     "userform.selfuser" : "My Profile",
-    "userform.updateuser" : "Update user"
+    "userform.updateuser" : "Update user",
 
-
+    "useredit.btn.activate" : "Utilisateur actif",
+    "useredit.pwd.message" : "New password (leave empty for not changing it)"
 }

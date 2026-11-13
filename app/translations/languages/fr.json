@@ -2,22 +2,42 @@
     "portal.name":"Portail BrailleRAP",
     "sysinfo.title":"Informations système",
     
-    "app.mustlogin" : "Vous devez être connecté pour accéder à cette page",
-    "app.usersuccess" : "Compte créé avec succès. Vous pouvez vous connecter.",
+    "app.btn.delete" : "Supprimer",
+    "app.btn.edit" : "Modifier",
+    "app.btn.save" : "Enregistrer",
+
+    "app.home":"Acceuil",
     "app.role.admin" : "Administrateur",
     "app.role.user" : "Utilisateur",
+    "app.mustlogin" : "Vous devez être connecté pour accéder à cette page",
+    "app.usersuccess" : "Compte créé avec succès. Vous pouvez vous connecter.",
+
+    "app.user.enabled" : "actif",
+    "app.user.disabled" : "désactivé",
     
+
     "button.logout": "Déconnexion",
     "button.admin" : "Administration utilisateurs",
     "button.profile" : "Mon compte",
+
+    "listusers.title" : "Liste des utilisateurs",
+    "listusers.description" : "Utilisateurs dans la base de données",
+    "listusers.nousers" : "Aucun utilisateur enregistré",
+    "listusers.user" : "Utilisateur", 
+    "listusers.role" : "Rôle",
+    "listusers.status" : "Status",
+    "listusers.date" : "Date",
+    "listusers.actions" : "Actions",
+    "listusers.btn.adduser" : "Ajouter un utilisateur",
 
      "login.title" : "Connexion",
      "login.description" : "Veuillez vous connecter pour continuer",
      "login.notregistered" : "Pas encore de compte ?",
      "login.registeruser" : "Créer un nouvel utilisateur",
      
-     "create.user.title" : "Création d'un utilisateur",
-     "create.user.description" : "Création d'un nouvel utilisateur",
+    "create.user.title" : "Création d'un utilisateur",
+    "create.user.description" : "Création d'un nouvel utilisateur",
+    "create.user.register" : "Enregistrer l'utilisateur",
 
      "form.createuser" : "Créer l'utilisateur",
      "form.user.name" : "Utilisateur",
@@ -37,5 +57,8 @@
      "register.user.gologin" : "Merci de vous connecter",
 
      "userform.selfuser" : "Mon Compte",
-     "userform.updateuser" : "Enregistrer les modifications"
+     "userform.updateuser" : "Enregistrer les modifications",
+
+     "useredit.btn.activate" : "Active user",
+     "useredit.pwd.message" : "Nouveau mot de passe (laisser vide si pas de changement)"
 }
