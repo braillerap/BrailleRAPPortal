@@ -120,8 +120,8 @@ class LoginForm(FlaskForm):
 # profile edit flask form
 #
 class UserEditForm(FlaskForm):
-    username = StringField("User name", validators=[DataRequired(), Length(3, 80)])
-    role = SelectField("Role", choices=[("user", _tr("app.role.user")), ("admin", _tr("app.role.admin"))])
+    username = StringField(_tr("form.user.name"), validators=[DataRequired(), Length(3, 80)])
+    role = SelectField(_tr("form.user.role"), choices=[("user", _tr("app.role.user")), ("admin", _tr("app.role.admin"))])
     is_active_account = BooleanField(_tr("useredit.btn.activate"))
     new_password = PasswordField(
         _tr("useredit.pwd.message"),

@@ -42,6 +42,7 @@
     "form.user.password" : "Password",
     "form.user.confirmpassword" : "Confirm Password",
     "form.user.passwordnotmatch" : "Passwords don't match.",
+    "form.user.role" : "Role",
     "form.user.login": "Login",
     "form.error" : "Error",
     "form.userexist" :  "This user name already exist.",

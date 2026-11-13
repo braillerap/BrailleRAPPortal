@@ -322,7 +322,7 @@ def user_edit(user_id):
     if user is None:
         abort(404)
 
-    form = UserEditForm(obj=user)
+    form = UserEditForm(request.form, obj=user, meta={'locales': [localei18.get_locale()]} )
     if form.validate_on_submit():
         duplicate_username = User.query.filter(
             User.username == form.username.data, User.id != user.id
