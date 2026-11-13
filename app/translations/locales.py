@@ -77,7 +77,10 @@ class localei18n:
 
     def set_locale (self, locale):
         i18n.set('locale', locale)
-
+    
+    def get_locale (self) -> str :
+        return i18n.get ('locale')
+    
     def get_string (self, key) -> str :
             print ('search for key ', key)
             res = i18n.t (key)

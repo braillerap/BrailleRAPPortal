@@ -3,8 +3,8 @@
 
 {% block content %}
 <div class="flex flex-col w-full items-center">
-  <h1 class="">Create User</h1>
-  <p>Create a new user</p>
+  <h1 class="">{{locale.get_string("create.user.title")}}</h1>
+  <p>{{locale.get_string("create.user.description")}}</p>
 
   <div class="flex flex-col w-2/3">
     <form method="post" novalidate>
@@ -23,7 +23,8 @@
       <div class="flex">
         {{ form.password.label(class_="lalebelm") }} {{
         form.password(class_="textedit") }}
-        <div class="">Min length 8 chars.</div>
+        <div class="">{{locale.get_string("form.min.length8")}}
+        </div>
         {% if form.password.errors %}
         <ul class="alert alert-danger">
           {% for e in form.password.errors %}
@@ -50,7 +51,7 @@
 
       <div class="flex flex-row">
         {{ form.submit(class_="btn btn-blue") }}
-        <a class="btn btn-blue" href="{{ url_for('users_list') }}">Cancel</a>
+        <a class="btn btn-blue" href="{{ url_for('users_list') }}">{{locale.get_string("form.cancel")}}</a>
       </div>
     </form>
   </div>

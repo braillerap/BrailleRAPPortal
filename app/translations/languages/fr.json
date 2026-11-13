@@ -1,7 +1,13 @@
 {
     "portal.name":"Portail BrailleRAP",
     "sysinfo.title":"Informations système",
-     "button.logout": "Déconnexion",
+    
+    "app.mustlogin" : "Vous devez être connecté pour accéder à cette page",
+    "app.usersuccess" : "Compte créé avec succès. Vous pouvez vous connecter.",
+    "app.role.admin" : "Administrateur",
+    "app.role.user" : "Utilisateur",
+    
+    "button.logout": "Déconnexion",
     "button.admin" : "Administration utilisateurs",
     "button.profile" : "Mon compte",
 
@@ -10,15 +16,20 @@
      "login.notregistered" : "Pas encore de compte ?",
      "login.registeruser" : "Créer un nouvel utilisateur",
      
+     "create.user.title" : "Création d'un utilisateur",
+     "create.user.description" : "Création d'un nouvel utilisateur",
+
      "form.createuser" : "Créer l'utilisateur",
      "form.user.name" : "Utilisateur",
      "form.user.password" : "Mot de passe",
      "form.user.confirmpassword" : "Confirmer le mot de passe",
      "form.user.passwordnotmatch" : "Les mots de passe ne correspondent pas.",
-    
+
      "form.user.login": "Connexion",
      "form.error" : "Erreur",
      "form.userexist" :  "Ce nom d'utilisateur est déjà pris.",
+     "form.min.length8" : "Minimum 8 caractères",
+     "form.cancel" : "Annuler",
 
      "register.user.title" : "Enregistrer un nouvel utilisateur",
      "register.user.advice" : "Le premier utilisateur enregistré sera administrateur",

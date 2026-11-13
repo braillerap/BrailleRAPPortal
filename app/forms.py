@@ -99,11 +99,11 @@ class RegisterForm(FlaskForm):
 # User Creation flask form
 #
 class UserCreateForm(FlaskForm):
-    username = StringField("User name", validators=[DataRequired(), Length(3, 80)])
-    password = PasswordField("Password", validators=[DataRequired(), Length(min=8)])
+    username = StringField(_tr("form.user.name"), validators=[DataRequired(), Length(3, 80)])
+    password = PasswordField(_tr("form.user.password"), validators=[DataRequired(), Length(min=8)])
     confirm = PasswordField(
-        "Confirm password",
-        validators=[DataRequired(), EqualTo("password", message="Passwords don't match.")],
+       _tr("form.user.confirmpassword"),
+        validators=[DataRequired(), EqualTo("password", message=_tr("form.user.passwordnotmatch"))],
     )
     role = SelectField("Role", choices=[("user", "User"), ("admin", "Administrator")])
     submit = SubmitField("Register user")

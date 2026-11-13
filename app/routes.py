@@ -146,6 +146,8 @@ from app.osmbridge import OSMBridge
 #create locales utility
 localei18 = localei18n ()
 
+localei18.set_locale ('fr') # TODO: temporary set local waiting for app config
+
 forms_set_localei18(localei18)
 
 ##########################################################
@@ -157,7 +159,11 @@ try:
     cairosvg_available = True
 except:
     print ("cairosvg not available")
+
+# global interface to Serial (BrailleRAP)
 local_ifx = SerialPrint ()
+
+# global interface to openstreetmap and processing
 osmbridge = OSMBridge ()
 
 # 
@@ -166,7 +172,7 @@ osmbridge = OSMBridge ()
 db.init_app(app)
 login_manager.init_app(app)
 login_manager.login_view = "login"
-login_manager.login_message = "You must be loggged in to access this page"
+login_manager.login_message = localei18.get_string("app.mustlogin")
 
 #
 # Create DB if empty
@@ -214,10 +220,10 @@ def admin_required(view_func):
 def login():
     if current_user.is_authenticated:
         return redirect(url_for("index"))
-    print ("creation de LoginForm")
+    
     #form = LoginForm()
-    localei18.set_locale('en')
-    form = LoginForm(request.form, meta={'locales': ['en']})
+    
+    form = LoginForm(request.form, meta={'locales': [localei18.get_locale()]})
     
     
     
@@ -249,8 +255,8 @@ def register():
         return redirect(url_for("index"))
 
     #form = RegisterForm()
-    localei18.set_locale('en')
-    form = RegisterForm(request.form, meta={'locales': ['en']})
+    
+    form = RegisterForm(request.form, meta={'locales': [localei18.get_locale()]})
     if form.validate_on_submit():
         if User.query.filter_by(username=form.username.data).first():
             flash(localei18.get_string("form.userexist"), localei18.get_string("form.error"))
@@ -481,10 +487,7 @@ def api_gettransportline ():
 @login_required
 def api_readstreetmapdata ():
     if request.method == "POST":
-        print(request.json)
-        print("request.json type", type(request.json))
         aparam = request.json
-        print (aparam)
                 
         svg = osmbridge.ReadStreetMapData (aparam['latitude'], aparam['longitude'], aparam['radius'], aparam['building'],
                 aparam['footpath'], aparam['polygon'], aparam['includeWater'], aparam['clipping'])
@@ -504,8 +507,6 @@ def api_readstreetmapdata ():
 def gcode_set_parameters():
     """Set parameters value"""
     if request.method == "POST":
-        print(request.json)
-        print("request.json type", type(request.json))
         aparam = request.json
         param = aparam["options"]
 
@@ -519,6 +520,7 @@ def gcode_set_parameters():
                 save_parameters(aparam["service"], desktop_app_options)
             except Exception as e:
                 print(e)
+
         elif aparam["service"] == accessbrap_service:
             try:
                 for k, v in param.items():
@@ -528,6 +530,17 @@ def gcode_set_parameters():
                 save_parameters(aparam["service"], access_app_options)
             except Exception as e:
                 print(e)
+
+        elif aparam["service"] == openstreet_service:
+            try:
+                for k, v in param.items():
+                    if k in access_app_options:
+                        access_app_options[k] = v
+
+                save_parameters(aparam["service"], access_app_options)
+            except Exception as e:
+                print(e)
+
         status = PrintStatus ()
         response = app.response_class(
                         response=json.dumps(status.getjson()),
@@ -766,12 +779,10 @@ def desktop_redirect_to_root():
 @app.route('/index')
 @login_required
 def index():
-    localei18.set_locale('fr')
     return render_template ('index.html', locale=localei18)
 
 @app.route("/sysinfo")
 def process ():
-    localei18.set_locale('en')
     return render_template ('process.html', locale=localei18, plist=ListProcess(), sysinfo=SystemInfo())
 
 @app.errorhandler(403)

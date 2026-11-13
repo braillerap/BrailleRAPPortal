@@ -1,6 +1,11 @@
 {
     "portal.name":"BrailleRAP Portal",
     "sysinfo.title":"System informations",
+
+    "app.mustlogin" : "You must be loggged in to access this page",
+    "app.usersuccess" : "Compte créé avec succès. Vous pouvez vous connecter.",
+    "app.role.admin" : "Administrator",
+    "app.role.user" : "User",
     "button.logout": "Logout",
     "button.admin" : "Admin",
     "button.profile" : "Profile",
@@ -10,15 +15,19 @@
     "login.notregistered" : "No login yet ?",
     "login.registeruser" : "Register a new user",
 
+    "create.user.title" : "Create User",
+    "create.user.description" : "Create a new user",
+
     "form.createuser" : "Create user",
     "form.user.name" : "User name",
     "form.user.password" : "Password",
     "form.user.confirmpassword" : "Confirm Password",
     "form.user.passwordnotmatch" : "Passwords don't match.",
-
     "form.user.login": "Login",
     "form.error" : "Error",
     "form.userexist" :  "This user name already exist.",
+    "form.min.length8" : "Min 8 characters",
+    "form.cancel" : "Cancel",
 
     "register.user.title" : "Register user",
     "register.user.advice" : "The first user will have administrator role",
