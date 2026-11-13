@@ -6,7 +6,7 @@
     "app.btn.edit" : "Modifier",
     "app.btn.save" : "Enregistrer",
 
-    "app.home":"Acceuil",
+    "app.home":"Accueuil",
     "app.role.admin" : "Administrateur",
     "app.role.user" : "Utilisateur",
     "app.mustlogin" : "Vous devez être connecté pour accéder à cette page",
@@ -51,6 +51,9 @@
      "form.userexist" :  "Ce nom d'utilisateur est déjà pris.",
      "form.min.length8" : "Minimum 8 caractères",
      "form.cancel" : "Annuler",
+
+    "profile.update.yours" : "Modifier votre compte utilisateur.",
+    "profile.update.user" : "Modifier le compte d'un utilisateur.",
 
      "register.user.title" : "Enregistrer un nouvel utilisateur",
      "register.user.advice" : "Le premier utilisateur enregistré sera administrateur",

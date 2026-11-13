@@ -49,6 +49,10 @@
     "form.min.length8" : "Min 8 characters",
     "form.cancel" : "Cancel",
 
+    "profile.update.yours" : "Update your profile.",
+    "profile.update.user" : "Update user informations.",
+
+
     "register.user.title" : "Register user",
     "register.user.advice" : "The first user will have administrator role",
     "register.user.exist" : "Already have an account ?",
