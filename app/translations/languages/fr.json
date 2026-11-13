@@ -60,6 +60,6 @@
      "userform.selfuser" : "Mon Compte",
      "userform.updateuser" : "Enregistrer les modifications",
 
-     "useredit.btn.activate" : "Active user",
+     "useredit.btn.activate" : "Utilisateur Actif",
      "useredit.pwd.message" : "Nouveau mot de passe (laisser vide si pas de changement)"
 }
