@@ -36,3 +36,5 @@ app/app.db
 app/static.zip
 app/brapportal.db
 .vscode/settings.json
+app/translations/__pycache__/
+tests/__pycache__/
