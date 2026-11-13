@@ -7,20 +7,21 @@
 
   <form method="post"  class="" novalidate>
     {{ form.hidden_tag() }}
-    <div class="flex flex-row items-center">
-      <p>{{ form.username._value()}}</p>
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
       {{ form.username.label(class_="labelelm")}}
       {{ form.username(autofocus=true, class_="textedit") }}
       {% if form.username.errors %}
-      <ul class="alert alert-danger">{% for e in form.username.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+      <ul class="alert alert-danger col-span-full">{% for e in form.username.errors %}<li>{{ e }}</li>{% endfor %}</ul>
       {% endif %}
-    </div>
-    <div class="flex flex-row items-center">
+      
+    
       {{ form.password.label(class_="labelelm") }}
       {{ form.password(class_="textedit") }}
       {% if form.password.errors %}
-      <ul class="alert alert-danger">{% for e in form.password.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+      <ul class="alert alert-danger col-span-full">{% for e in form.password.errors %}<li>{{ e }}</li>{% endfor %}</ul>
       {% endif %}
+      
+      
     </div>
     <div class="w-full">
     {{ form.submit(class_="btn btn-blue mx-auto w-full") }}
