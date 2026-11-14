@@ -10,8 +10,8 @@
       {{locale.get_string("profile.update.user")}} 
     {% endif %}
   </p>
-  <div class="h-4 md:h8 lg:h16"></div>
-      <form method="post" novalidate>
+  <div class="h-4 md:h-8 lg:h-16"></div>
+  <form method="post" novalidate>
       {{ form.hidden_tag() }}
       <div class="grid grid-cols-1 gap-1 md:gap-4 md:grid-cols-2">
         {{ form.username.label(class_="labelelm") }} {{
