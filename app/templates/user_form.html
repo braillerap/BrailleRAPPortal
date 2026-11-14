@@ -1,7 +1,7 @@
 {% extends "base.html" %} 
 
 {% block content %}
-<div class="flex flex-col items-center w-full">
+<div class="flex flex-col bg-backgnd items-center w-full h-full">
   <h1>{{ locale.get_string('userform.selfuser') if is_self else locale.get_string('userform.updateuser') + " :" + user.username }}</h1>
   <p class="">
     {% if is_self %} 
@@ -12,53 +12,54 @@
     {% endif %}
   </p>
   <div class="h-4 md:h8"></div>
-  <div class="flex flex-col text-left rtl:text-right w-4/5 md:w-3/4">
-    <form method="post" novalidate>
+      <form method="post" novalidate>
       {{ form.hidden_tag() }}
-      <div class="flex">
+      <div class="grid grid-cols-1 gap-1 md:gap-4 md:grid-cols-2">
         {{ form.username.label(class_="labelelm") }} {{
         form.username(class_="textedit") }} {% if form.username.errors %}
-        <ul class="alert alert-danger">
+        <ul class="alert alert-danger col-span-full">
           {% for e in form.username.errors %}
           <li>{{ e }}</li>
           {% endfor %}
         </ul>
         {% endif %}
-      </div>
+      
 
       {% if not is_self %}
-      <div class="flex">
-        {{ form.role.label(class_="labelelm") }} {{ form.role(class="select")
-        }}
-      </div>
-      <div class="flex flex-row">
-         {{ form.is_active_account.label(class_="labelelm") }}
-        {{ form.is_active_account(class_="px-2 mx-4 bg-red-500") }}
+      
+        {{ form.role.label(class_="labelelm") }} 
+        {{ form.role(class="select") }}
+      
+      
+        {{ form.is_active_account.label(class_="labelelm") }}
+        {{ form.is_active_account(class_="h-1/2 v-center px-2 mx-4 bg-red-500") }}
 
-      </div>
+      
       {% endif %}
 
-      <div class="flex">
-        {{ form.new_password.label (class_="labelelm") }}
+      
+        {{ form.new_password.label (class_="labelelm w-2/3") }}
         {{ form.new_password(class_="textedit") }} 
         {% if form.new_password.errors %}
-        <ul class="alert alert-danger">
+        <ul class="alert alert-danger col-span-full">
           {% for e in form.new_password.errors %}
           <li>{{ e }}</li>
           {% endfor %}
         </ul>
         {% endif %}
-      </div>
-
-      <div class="flex flex-col md:flex-row items-center">
+        </div>
+        <div class="flex flex-col md:flex-row mx-auto items-center w-80">
         {{ form.submit(class_="btn btn-blue") }}
         
         <a class="btn btn-blue"
           href="{{ url_for('users_list') if not is_self else url_for('index') }}">
           {{locale.get_string("form.cancel")}}
           </a>
+        </div>  
       </div>
+
+      
     </form>
-  </div>
+  
 </div>
 {% endblock %}
