@@ -19,7 +19,7 @@
     <thead class="bg-btnlightbackgnd">
       <tr class="px-2">
         <th class="px-2">{{locale.get_string ("listusers.user")}}</th>
-        <th class="px-2">{{locale.get_string("listusers.role")}}/th>
+        <th class="px-2">{{locale.get_string("listusers.role")}}</th>
         <th class="px-2">{{locale.get_string("listusers.status")}}</th>
         <th class="px-2">{{locale.get_string("listusers.date")}}</th>
         <th class="px-2">{{locale.get_string("listusers.actions")}}</th>
@@ -35,7 +35,7 @@
           {% if user.is_active_account %}
           <span class="font-semibold">{{locale.get_string("app.user.enabled")}}</span>
           {% else %}
-          <span class="badge danger">{{locale.get_string("app.user.disabled")}}</span>
+          <span class="badge warning">{{locale.get_string("app.user.disabled")}}</span>
           {% endif %}
         </td>
 

@@ -2,58 +2,62 @@
 
 
 {% block content %}
-<div class="flex flex-col w-full items-center">
+<div class="flex flex-col bg-backgnd items-center w-full h-full">
   <h1 class="">{{locale.get_string("create.user.title")}}</h1>
   <p>{{locale.get_string("create.user.description")}}</p>
 
-  <div class="flex flex-col w-2/3">
+  <div class="h-4 md:h8 lg:h16"></div>
+
+  
     <form method="post" novalidate>
       {{ form.hidden_tag() }}
-      <div class="flex">
-        {{ form.username.label(class_="lalebelm") }} {{
-        form.username(autofocus=true, class_="textedit") }} {% if form.username.errors %}
-        <ul class="alert alert-danger">
+      <div class="grid grid-cols-1 gap-1 md:gap-4 md:grid-cols-2">
+        {{ form.username.label(class_="labelelm") }} 
+        {{ form.username(autofocus=true, class_="textedit") }} 
+        
+        {% if form.username.errors %}
+        <ul class="alert alert-danger col-span-full">
           {% for e in form.username.errors %}
           <li>{{ e }}</li>
           {% endfor %}
         </ul>
         {% endif %}
-      </div>
-
-      <div class="flex">
-        {{ form.password.label(class_="lalebelm") }} {{
-        form.password(class_="textedit") }}
-        <div class="">{{locale.get_string("form.min.length8")}}
+        <div class = "flex flex-col ">
+          {{ form.password.label(class_="labelelm") }} 
+          <div class="my-0 px-4 mx-1 text-xs col-span-full">{{locale.get_string("form.min.length8")}}</div>
         </div>
+        {{ form.password(class_="textedit") }}
+        
         {% if form.password.errors %}
-        <ul class="alert alert-danger">
+        <ul class="alert alert-danger col-span-full">
           {% for e in form.password.errors %}
           <li>{{ e }}</li>
           {% endfor %}
         </ul>
         {% endif %}
-      </div>
-      <div class="flex">
-        {{ form.confirm.label(class_="lalebelm") }} {{
-        form.confirm(class_="textedit") }} {% if form.confirm.errors %}
-        <ul class="field-errors">
+      
+      
+        {{ form.confirm.label(class_="labelelm") }} 
+        {{ form.confirm(class_="textedit") }} 
+        {% if form.confirm.errors %}
+        <ul class="alert alert-danger col-span-full">
           {% for e in form.confirm.errors %}
           <li>{{ e }}</li>
           {% endfor %}
         </ul>
         {% endif %}
-      </div>
-      <div class="flex">
-        {{ form.role.label(class_="labelelm") }} {{ form.role(class_="textedit")
-        }}
+      
+        {{ form.role.label(class_="labelelm") }} 
+        {{ form.role(class_="select") }}
+
       </div>
       
 
-      <div class="flex flex-row">
+      <div class="flex flex-col md:flex-row mx-auto items-center w-80">
         {{ form.submit(class_="btn btn-blue") }}
         <a class="btn btn-blue" href="{{ url_for('users_list') }}">{{locale.get_string("form.cancel")}}</a>
       </div>
     </form>
-  </div>
+  
 </div>
 {% endblock %}

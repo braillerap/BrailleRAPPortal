@@ -43,7 +43,6 @@ import serial.tools.list_ports
 from functools import wraps
 from app import app
 from app.local_if import PrintStatus, SerialPrint
-from app.translations.locales import locales
 from app.translations.locales import localei18n
 
 from flask import render_template, flash, redirect, url_for, send_from_directory, request, abort
