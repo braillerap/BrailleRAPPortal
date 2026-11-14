@@ -5,9 +5,9 @@
   <h1 class="text-2xl mb-4">{{locale.get_string('login.title')}}</h1>
   <p >{{locale.get_string('login.description')}}</p>
 
-  <form method="post"  class="" novalidate>
+  <form method="post"  class="w-4/5 lg:w-1/2 xl:w-1/3" novalidate>
     {{ form.hidden_tag() }}
-    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="grid grid-cols-1 gap-1 md:gap-4 md:grid-cols-2">
       {{ form.username.label(class_="labelelm")}}
       {{ form.username(autofocus=true, class_="textedit") }}
       {% if form.username.errors %}
@@ -29,7 +29,7 @@
   </form>
 
   <p >
-    {{locale.get_string('login.notregistered')}} <a class="font-medium text-fg-brand hover:underline" href="{{ url_for('register') }}">{{locale.get_string('login.registeruser')}}</a>
+    {{locale.get_string('login.notregistered')}} <a class="txtlink" href="{{ url_for('register') }}">{{locale.get_string('login.registeruser')}}</a>
   </p>
 </div>
 {% endblock %}

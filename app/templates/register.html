@@ -1,54 +1,61 @@
-{% extends "base.html" %}
-{% block title %}
+{% extends "base.html" %} {% block title %}
 <title>BrailleRAP portal</title>
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block content %}
 <div class="flex flex-col bg-backgnd w-full h-full items-center">
-  <h1>{{locale.get_string ("register.user.title")}} </h1>
-  <p >{{locale.get_string ("register.user.advice")}}</p>
+  <h1>{{locale.get_string ("register.user.title")}}</h1>
+  <p>{{locale.get_string ("register.user.advice")}}</p>
 
   <form method="post" novalidate>
     {{ form.hidden_tag() }}
-    <div >
-      {{ form.username.label }}
-      {{ form.username(autofocus=true, class_="textedit") }}
-      {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul class="alert alert-danger">
-          {% for message in messages %}
-            <li>{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
-      {% if form.username.errors %}
-      <ul class="alert alert-danger">{% for e in form.username.errors %}<li>{{ e }}</li>{% endfor %}</ul>
-      {% endif %}
-    </div>
-    
-    <div >
-      {{ form.password.label }}
-      {{ form.password(class_="textedit") }}
-      <div >Min length 8 char.</div>
+    <div class="grid grid-cols-1 gap-1 md:gap-4 md:grid-cols-2">
+      {{ form.username.label(class_="labelelm") }} {{ form.username(autofocus=true,
+      class_="textedit") }} {% with messages = get_flashed_messages() %} {% if
+      messages %}
+      <ul class="alert alert-danger col-span-full">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% endwith %} {% if form.username.errors %}
+      <ul class="alert alert-danger col-span-full">
+        {% for e in form.username.errors %}
+        <li>{{ e }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} 
+      <div class = "flex flex-col ">
+        {{ form.password.label(class_="labelelm") }}
+        <div class="my-0 px-4 mx-1 text-xs col-span-full">{{locale.get_string("form.min.length8")}}</div>
+      </div> 
+      
+      {{ form.password(class_="textedit")}}
+      
       {% if form.password.errors %}
-      <ul class="alert alert-danger">{% for e in form.password.errors %}<li>{{ e }}</li>{% endfor %}</ul>
-      {% endif %}
-    </div>
-    <div >
-      {{ form.confirm.label }}
-      {{ form.confirm(class_="textedit") }}
+      <ul class="alert alert-danger col-span-full">
+        {% for e in form.password.errors %}
+        <li>{{ e }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} {{ form.confirm.label(class_="labelelm") }} {{ form.confirm(class_="textedit") }}
       {% if form.confirm.errors %}
-      <ul class="alert alert-danger">{% for e in form.confirm.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+      <ul class="alert alert-danger col-span-full">
+        {% for e in form.confirm.errors %}
+        <li>{{ e }}</li>
+        {% endfor %}
+      </ul>
       {% endif %}
     </div>
-    <div>
-    {{ form.submit(class_="btn btn-blue w-full") }}
-    </div>
+    <div>{{ form.submit(class_="btn btn-blue w-full") }}</div>
   </form>
 
   <p>
-    {{locale.get_string ("register.user.exist")}}  <a class="font-medium text-fg-brand hover:underline" href="{{ url_for('login') }}">{{locale.get_string ("register.user.gologin")}}</a>
+    {{locale.get_string ("register.user.exist")}}
+    <a
+      class="font-medium text-fg-brand hover:underline"
+      href="{{ url_for('login') }}"
+    >
+      {{locale.get_string ("register.user.gologin")}}
+    </a>
   </p>
 </div>
 {% endblock %}
