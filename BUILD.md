@@ -1,26 +1,74 @@
-Prerequisites
-Python 3.11
-NodeJs 24.22
+# BrailleRAPPortal Build Manual
 
 
-clone the BrailleRAPPortal repo
-git clone --sub-modules https://github.com/braillerap/BrailleRAPPortal.git
-cd BrailleRAPPortal
+## Prerequisites
+
+ * Python 3.11
+ * NodeJs 24.22
 
 
-Create a Python virtual environment
+## clone the BrailleRAPPortal repo
 
-Python -m venv venv
+ ```bash
+ git clone --sub-modules https://github.com/braillerap/BrailleRAPPortal.git
+ cd BrailleRAPPortal
+ ```
 
-Activate the python environment
-./venv/Scripts/activate.ps1
 
-source ./venv/bin/activate
+## Create a Python virtual environment
 
-Install python dependencies
-pip install -r requirement.txt
+ ```bash
+ Python -m venv venv
+ ```
 
-Install nodejs dependencies
+## Activate the python environment
 
-npm i
+**On Windows systems**
+ ```bash
+ ./venv/Scripts/activate.ps1
+ ```
+**On Linux Systems**
+ ```bash
+ source ./venv/bin/activate
+ ```
 
+## Install python dependencies
+
+ ```bash
+ pip install -r requirements.txt
+  ```
+
+## Install nodejs dependencies
+
+ ```bash
+ npm i
+ ```
+
+ ## Update submodule and tell git about the good branch
+
+ ```bash
+ cd ./reactapp/DesktopBrailleRAP
+ git pull origin main
+ cd ../..
+ 
+ cd ./reactapp/AccessBrailleRAP
+ git pull origin main
+ cd ../..
+
+ cd ./reactapp/OpenStreetTouch
+ git pull origin main
+ cd ../..
+ ```
+ ## Build the solution
+
+```bash
+ npm run fullbuild
+```
+
+## Start the web developpement server
+
+```bash
+ npm run tailthon
+ or
+ python portal.py
+```
