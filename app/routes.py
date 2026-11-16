@@ -226,9 +226,6 @@ def login():
     
     form = LoginForm(request.form, meta={'locales': [localei18.get_locale()]})
     
-    
-    
-
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data.strip()).first()
         if user is None or not user.check_password(form.password.data):
