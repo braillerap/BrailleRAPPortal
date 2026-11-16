@@ -6,11 +6,15 @@
  * Python 3.11
  * NodeJs 24.22
 
-
+Python 3.11 should already been installed on Debian Trixie
+ 
+```bash
+sudo apt install nodejs npm
+```
 ## clone the BrailleRAPPortal repo
 
  ```bash
- git clone --sub-modules https://github.com/braillerap/BrailleRAPPortal.git
+ git clone --recurse-submodules https://github.com/braillerap/BrailleRAPPortal.git
  cd BrailleRAPPortal
  ```
 
