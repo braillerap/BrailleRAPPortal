@@ -64,7 +64,7 @@ reboot the Raspberry Pi after expanding the filesystem.
 ## Download the package portal.zip
 
 ```bash
- wget https://github.com/braillerap/BrailleRAPPortal/releases/download/v0.0.1/portal.zip
+  wget https://github.com/braillerap/BrailleRAPPortal/releases/download/latest/portal.zip
 ```
 
 ## Unzip the package
