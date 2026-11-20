@@ -1,23 +1,22 @@
 {
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",
+    "cpx2": "^9.0.3",
     "npm-run-all": "^4.1.5",
     "rimraf": "^6.1.3",
     "tailwindcss": "^4.3.3"
   },
   "scripts": {
-    "gitdesktop":"git -C ./reactapp/DesktopBrailleRAP/  pull",
-    "gitaccess":"git -C ./reactapp/AccessBrailleRAP/  pull ",
-    "gitopenstreet":"git -C ./reactapp/OpenStreetTouch/  pull",
+    "gitdesktop": "git -C ./reactapp/DesktopBrailleRAP/  pull",
+    "gitaccess": "git -C ./reactapp/AccessBrailleRAP/  pull ",
+    "gitopenstreet": "git -C ./reactapp/OpenStreetTouch/  pull",
     "cleandesktop": "rimraf  --glob \"./app/static/desktopbrap/*\"",
     "cleanaccess": "rimraf  --glob \"./app/static/accessbrap/*\"",
     "cleanopenstreet": "rimraf  --glob \"./app/static/openstreet/*\"",
     "clean": "npm-run-all cleandesktop cleanaccess cleanopenstreet",
-
     "update_desktop": "npx cpx -v ./reactapp/DesktopBrailleRAP/build/**  ./app/static/desktopbrap/",
     "update_access": "npx cpx -v ./reactapp/AccessBrailleRAP/build/**  ./app/static/accessbrap/",
     "update_openstreet": "npx cpx -v ./reactapp/OpenStreetTouch/build/**  ./app/static/openstreet/",
-
     "npm_desktop": "npm --prefix ./reactapp/DesktopBrailleRAP install",
     "npm_access": "npm --prefix ./reactapp/AccessBrailleRAP install",
     "npm_openstreet": "npm --prefix ./reactapp/OpenStreetTouch install",
@@ -29,11 +28,14 @@
     "tailwindbuildmini": "npx tailwindcss -i tailwind/style.css -c tailwind/tailwind.config.js -o ./app/static/index.css --minify",
     "tailwindwatch": "npx tailwindcss -i tailwind/style.css -c tailwind/tailwind.config.js -o ./app/static/index.css --watch",
     "build": "npm-run-all tailwindbuildmini clean  desktop access openstreet update_openstreet update_desktop update_access ",
-    "flask":"python portal.py",
-    "tailthon":"npm-run-all tailwindbuildmini flask",
+    "flask": "python portal.py",
+    "tailthon": "npm-run-all tailwindbuildmini flask",
     "package": "python builddist.py",
-    "start":"npm-run-all gitaccess gitdesktop gitopenstreet build flask",
-    "startopen":"npm-run-all gitopenstreet openstreet update_openstreet flask",
-    "fullbuild":"npm-run-all gitaccess gitdesktop gitopenstreet npm_install build"
+    "start": "npm-run-all gitaccess gitdesktop gitopenstreet build flask",
+    "startopen": "npm-run-all gitopenstreet openstreet update_openstreet flask",
+    "fullbuild": "npm-run-all gitaccess gitdesktop gitopenstreet npm_install build"
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.5.1": true
   }
 }
