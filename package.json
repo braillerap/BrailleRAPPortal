@@ -31,7 +31,7 @@
     "build": "npm-run-all tailwindbuildmini clean  desktop access openstreet update_openstreet update_desktop update_access ",
     "flask":"python portal.py",
     "tailthon":"npm-run-all tailwindbuildmini flask",
-
+    "package": "python builddist.py",
     "start":"npm-run-all gitaccess gitdesktop gitopenstreet build flask",
     "startopen":"npm-run-all gitopenstreet openstreet update_openstreet flask",
     "fullbuild":"npm-run-all gitaccess gitdesktop gitopenstreet npm_install build"
