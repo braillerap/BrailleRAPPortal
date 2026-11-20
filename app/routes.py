@@ -145,7 +145,7 @@ from app.osmbridge import OSMBridge
 #create locales utility
 localei18 = localei18n ()
 
-localei18.set_locale ('fr') # TODO: temporary set local waiting for app config
+localei18.set_locale ('en') # TODO: temporary set local waiting for app config
 
 forms_set_localei18(localei18)
 
