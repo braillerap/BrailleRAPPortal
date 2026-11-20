@@ -42,3 +42,4 @@ app/brapportal.db
 .vscode/settings.json
 app/translations/__pycache__/
 tests/__pycache__/
+app/static/param/openstreettouch.json
