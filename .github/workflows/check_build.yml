@@ -1,4 +1,4 @@
-name: check_node_module
+name: check_build
 
 on:
   push:
@@ -38,4 +38,4 @@ jobs:
       run: npm install
     
     - name: Build
-      run: npm run fullbuild
+      run: npm run build
