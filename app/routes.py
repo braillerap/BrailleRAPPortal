@@ -44,6 +44,7 @@ from functools import wraps
 from app import app
 from app.local_if import PrintStatus, SerialPrint
 from app.translations.locales import localei18n
+from dotenv import dotenv_values
 
 from flask import render_template, flash, redirect, url_for, send_from_directory, request, abort
 from flask_login import (
@@ -168,6 +169,10 @@ osmbridge = OSMBridge ()
 # 
 # Init flask app
 #
+
+# config secret for csrf flask form protection
+app.config['SECRET_KEY'] = dotenv_values(".env")["SECRET_KEY"]
+
 db.init_app(app)
 login_manager.init_app(app)
 login_manager.login_view = "login"
