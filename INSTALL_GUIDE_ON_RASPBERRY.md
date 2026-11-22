@@ -22,7 +22,7 @@ Get an old one you have in a drawer for years. A Raspberry Pi 3 or a Raspberry P
 ### Activate SSH option.
 
 ### WI-FI.
- Enter the SSID and password of your WI-FI network to access internet from the Pi, and to access to your Pi with ssh.
+ Enter the SSID and password of your WI-FI network to access internet from the Pi, and to access the BrailleRAP Portal from your network.
 
 ### Activate Raspberry Pi Connect only if you are used to.
 
@@ -89,12 +89,41 @@ cd portal
 ```bash
 echo "SECRET_KEY=\"$(openssl rand -hex 16)\"" > .env
 ```
+## Install the web app as system service
 
-## Start the application
-```bash
-python portal.py
-```
+### Install nginx
+ ```bash
+ sudo apt update
+ sudo apt install nginx
+ ```
+### Enable BrailleRAP portal as a service
+ ```bash
+ sudo cp ./install/braillerap.service /etc/systemd/service/
+ sudo systemctl enable braillerap
+ ```
 
+### Start the application
+ ```bash
+ sudo systemctl start braillerap
+ ```
+### nginx config
+
+ Remove the default web site
+ ```bash
+ sudo rm /etc/nginx/sites-enabled
+ ```
+ 
+  Make the BrailleRAP Portal app available as web site
+  ```bash
+  sudo cp ./install/braillerap.nginx /etc/nginx/sites-available/braillerap
+  sudo ln -s /etc/nginx/sites-available/braillerap /etc/nginx/sites-enabled/braillerap
+  ```
+
+  Restart nginx
+  ```bash
+  sudo systemctl restart nginx
+  ```
 ## Enjoy the portal
+With a web browser nagivate to the url [http://braillerapportal.local](http://braillerapportal.local)
 
-With a web browser nagivate to the url [http://braillerapportal.local:5000](http://braillerapportal.local:5000)
+![Login screen screenshot](./screenshots/login.png)
