@@ -1,0 +1,11 @@
+[Unit]
+Description=BrailleRAP web app service
+After=network.target
+
+
+[Service]
+ExecStart=/home/braillerap/portal/venv/bin/python3 -m gunicorn app:app
+WorkingDirectory=/home/braillerap/portal
+
+[Install]
+WantedBy=multi-user.target

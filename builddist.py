@@ -23,7 +23,7 @@ def main ():
     distdir = os.path.abspath('./dist')
     distpath = os.path.abspath('./dist/portal')
     osmpython = os.path.abspath('./reactapp/OpenStreetTouch')
-
+    
     
     shutil.rmtree (os.path.join(distdir, ""), ignore_errors=True)
     os.makedirs (distpath, exist_ok=True)
@@ -34,6 +34,8 @@ def main ():
                     ignore=shutil.ignore_patterns("*.pyc", "__pycache__", "*.db"  ))
     shutil.copytree (os.path.join(osmpython, "osm"), os.path.join(distpath, "reactapp/OpenStreetTouch/osm"), 
                     ignore=shutil.ignore_patterns("*.pyc", "__pycache__", "*.db" ))
+    shutil.copytree (os.path.join(rootpath, "install"), os.path.join(distpath, "install"), 
+                        ignore=shutil.ignore_patterns("*.pyc", "__pycache__", "*.db" ))
 
     zip_folder (distdir, "./dist/portal.zip")
 
