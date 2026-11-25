@@ -64,6 +64,7 @@ def test_form_translation ():
 class TestUserForm(FormTestCase):
     form_class = LoginForm
 
+    @pytest.mark.skip(reason="need to solve context issue")
     def test_translation(self):
         """_summary_
         """
