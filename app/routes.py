@@ -786,9 +786,11 @@ def index():
     return render_template ('index.html', locale=localei18)
 
 @app.route("/sysinfo")
+@login_required
 def process ():
     return render_template ('process.html', locale=localei18, plist=ListProcess(), sysinfo=SystemInfo())
 
+@app.route("/netmanager")
 @app.errorhandler(403)
 def forbidden(_e):
     return render_template("error.html", locale=localei18,  code=403, message="Access denied."), 403
