@@ -3,12 +3,13 @@ import sys
 
 pytestmark = pytest.mark.skipif(sys.platform == "win32", reason="tests for linux only")
 
-import sdbus
-from sdbus_block.networkmanager import (
-    ConnectionType,
-    NetworkManagerSettings,
-    NetworkConnectionSettings,
-)
+if (sys.platform != "win32"):
+    import sdbus
+    from sdbus_block.networkmanager import (
+        ConnectionType,
+        NetworkManagerSettings,
+        NetworkConnectionSettings,
+    )
 
 
 
