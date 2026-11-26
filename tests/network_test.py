@@ -22,6 +22,7 @@ def display_network_path (path: str):
     print("name:", profile.connection.connection_id)
     print("uuid:", profile.connection.uuid)
     print("type:", profile.connection.connection_type)
+    print("connection:", profile.connection)
     if profile.connection.interface_name:
         print("      interface-name:", profile.connection.interface_name)
     if profile.ipv4:
