@@ -21,7 +21,6 @@ class NMCliProxy:
                 text = True,
                 timeout = Timeout
             )
-            print ("subprocess:", res.stdout, res.stderr)
 
         except subprocess.TimeoutExpired as ex:
             print (ex)
@@ -47,15 +46,36 @@ class NMCliProxy:
             print (ex)
             return clist
         return clist
-    def get_ip4_from_id (self, id):
+
+    def get_ip4_from_id (self, id) -> []:
+        """
+        Return a string containing the IP V4 address assotiated with the connexion identified by id
+        """
         ip = []
         try:
             res = self.runcmd("-t", "-g", "IP4.ADDRESS", "connection", "show", "id", id)
             clist = self.parse_result(res.stdout)
-            print ("result ip", clist)
+            for ipadr in clist:
+                ip.append (ipadr)
         except Exception as ex:
             print (ex)
-            return ip
+
+        return ip
+
+    def is_connected(self, id) -> bool:
+        """
+        Return true if the connection identified by id is connected (active)
+
+        """
+        try:
+            result = self.runcmd("-t", "-f", "GENERAL.STATE",
+                           "connection", "show", "id", id)
+
+            return result.stdout.strip().endswith(":activated")
+        except Exception as ex:
+            print (ex)
+            return False
+        return False
 
     def parse_result (self, nmcli_output:str)->[]:
         result = []
@@ -72,5 +92,7 @@ if __name__ == '__main__':
 
     #search for wlan0
     for cn in cnxs:
-        if cn[-1] == "wlan0":
-            print (nmcli.get_ip4_from_id(cn[0]))
+        if cn[2] == "802-11-wireless":
+            print (cn[0], nmcli.get_ip4_from_id(cn[0]))
+    for cn in cnxs:
+        print (cn[0], ":Connected" if nmcli.is_connected(cn[0]) else ":Disconnected")
