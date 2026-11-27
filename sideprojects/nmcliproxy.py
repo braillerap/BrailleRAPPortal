@@ -35,6 +35,59 @@ class NMCliProxy:
 
         return res
 
+    def create_client(self, ifname: str, id: str, name: str, ssid: str, pwd: str, hidden: bool, timeout=30):
+        """
+        Create a new connection as wifi client
+
+        nmcli cheatsheet:
+        sudo nmcli device wifi connect "SSID" password "PASSWORD"
+        sudo nmcli device wifi connect "SSID" password "PASSWORD" hidden yes
+        """
+
+        try:
+            args = ["device", "wifi", "connect", ssid,
+                    "ifname", ifname, "name", id,
+                    "hidden", "yes" if hidden else "no"]
+
+            if self.password is not None:
+                args += ["wifi-sec.key-mgmt", self.security,
+                         "wifi-sec.psk", self.password]
+            # ensure wifi is on
+            self.runcmd("radio", "wifi", "on")
+
+            # scan available wifi hotspot
+            self.runcmd("device", "wifi", "rescan", "ifname", ifname)
+
+            self.runcmd(*args)
+        except Exception as ex:
+            print (ex)
+
+
+    def delete(self, id: str) -> bool:
+        """
+        Delete the connection identified by id
+        """
+        if self.is_exist(id):
+            self._run("connection", "delete", "id", id)
+        else:
+
+
+    def get_ip4_from_id (self, id: str) -> []:
+        """
+        Return a string containing the IP V4 address assotiated with the
+        connexion identified by id
+        """
+        ip = []
+        try:
+            res = self.runcmd("-t", "-g", "IP4.ADDRESS", "connection", "show", "id", id)
+            clist = self.parse_result_array(res.stdout)
+            for ipadr in clist:
+                ip.append (ipadr)
+        except Exception as ex:
+            print (ex)
+
+        return ip
+
     def list_connexions (self) -> []:
         print ("list_connexions")
         clist = []
@@ -47,14 +100,14 @@ class NMCliProxy:
             return clist
         return clist
 
-    def if_down(self, id) -> bool:
+    def if_down(self, id: str) -> bool:
         """
         Disable the connection identied by id (ifdown)
         """
         try:
             result = self.runcmd("connection", "down", "id", id)
 
-            # it seem there is a bug in nmcli which always return 0 append
+            # it seem there is a bug in nmcli which always return 0 and
             # error message is in stdout
             #print (result.stderr)
             #print (result)
@@ -70,7 +123,7 @@ class NMCliProxy:
 
         return False
 
-    def if_up(self, id) -> bool:
+    def if_up(self, id: str) -> bool:
         """
         Disable the connection identied by id (ifdown)
         """
@@ -97,21 +150,7 @@ class NMCliProxy:
 
         return result.returncode == 0
 
-    def get_ip4_from_id (self, id) -> []:
-        """
-        Return a string containing the IP V4 address assotiated with the
-        connexion identified by id
-        """
-        ip = []
-        try:
-            res = self.runcmd("-t", "-g", "IP4.ADDRESS", "connection", "show", "id", id)
-            clist = self.parse_result_array(res.stdout)
-            for ipadr in clist:
-                ip.append (ipadr)
-        except Exception as ex:
-            print (ex)
 
-        return ip
 
     def is_up(self, id:str) -> bool:
         """
