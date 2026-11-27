@@ -46,19 +46,22 @@ class NMCliProxy:
 
         try:
             args = ["device", "wifi", "connect", ssid,
-                    "ifname", ifname, "name", id,
-                    "hidden", "yes" if hidden else "no"]
+                    "ifname", ifname, "name", id]
 
-            if self.password is not None:
-                args += ["wifi-sec.key-mgmt", self.security,
-                         "wifi-sec.psk", self.password]
+            if password:
+                args += ["password", pwd]
+            if hidden:
+                args += ["hidden", "yes"]
+
             # ensure wifi is on
             self.runcmd("radio", "wifi", "on")
 
             # scan available wifi hotspot
             self.runcmd("device", "wifi", "rescan", "ifname", ifname)
 
+            # try to connect
             self.runcmd(*args)
+
         except Exception as ex:
             print (ex)
 
