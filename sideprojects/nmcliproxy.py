@@ -53,12 +53,16 @@ class NMCliProxy:
         """
         try:
             result = self.runcmd("connection", "down", "id", id)
-            print (result.stdout)
 
-            if result.returncode == 0:
+            # it seem there is a bug in nmcli which always return 0 append
+            # error message is in stdout
+            #print (result.stderr)
+            #print (result)
+            #if result.returncode == 0:
+            #    return True
+            if not self.is_up(id):
                 return True
 
-            print (result.stderr)
             return False
 
         except Exception as ex:
@@ -72,12 +76,10 @@ class NMCliProxy:
         """
         try:
             result = self.runcmd("connection", "up", "id", id)
-            print (result.stdout)
 
             if result.returncode == 0:
                 return True
 
-            print (result.stderr)
             return False
 
         except Exception as ex:
@@ -119,7 +121,7 @@ class NMCliProxy:
         try:
             result = self.runcmd("-t", "-f", "GENERAL.STATE",
                            "connection", "show", "id", id)
-            print ("is_up", result.stdout)
+
             return result.stdout.strip().endswith(":activated")
         except Exception as ex:
             print (ex)
@@ -159,9 +161,7 @@ if __name__ == '__main__':
 
     # try to disable wifi => eth0 connexion needed for terminal
     # need root privilege
-    print ("disable wifi", ":Down" if nmcli.if_down(wifi) else ":Error")
+    print ("disable wifi", "=>Down" if nmcli.if_down(wifi) else "=>Error")
     print (wifi, ":UP" if nmcli.is_up(wifi) else ":Down")
-    print ("enable wifi", ":UP" if nmcli.if_up(wifi) else ":Error")
+    print ("enable wifi", "=>UP" if nmcli.if_up(wifi) else "=>Error")
     print (wifi, ":UP" if nmcli.is_up(wifi) else ":Down")
-
-    
