@@ -142,3 +142,9 @@ if __name__ == '__main__':
         print (cn[0], ":Exist" if nmcli.is_exist(cn[0]) else ":Unknown")
 
     print ("bidon", ":Exist" if nmcli.is_exist("bidon") else ":Unknown")
+
+    # try to disable wifi => eth0 connexion needed for terminal
+    print ("disable wifi", ":Down" if nmcli.if_down(wifi) else ":Error")
+    print (wifi, ":UP" if nmcli.is_up(cn[0]) else ":Down")
+    print ("enable wifi", ":UP" if nmcli.if_up(wifi) else ":Error")
+    
