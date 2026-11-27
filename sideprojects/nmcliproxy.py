@@ -53,10 +53,17 @@ class NMCliProxy:
         """
         try:
             result = self.runcmd("connection", "down", "id", id)
+            print (result.stdout)
 
-            return result.returncode == 0
+            if result.returncode == 0:
+                return True
+
+            print (result.stderr)
+            return False
+
         except Exception as ex:
             print (ex)
+
         return False
 
     def if_up(self, id) -> bool:
@@ -65,10 +72,17 @@ class NMCliProxy:
         """
         try:
             result = self.runcmd("connection", "up", "id", id)
+            print (result.stdout)
 
-            return result.returncode == 0
+            if result.returncode == 0:
+                return True
+
+            print (result.stderr)
+            return False
+
         except Exception as ex:
             print (ex)
+
         return False
 
     def is_exist(self, id:str) -> bool:
@@ -105,7 +119,7 @@ class NMCliProxy:
         try:
             result = self.runcmd("-t", "-f", "GENERAL.STATE",
                            "connection", "show", "id", id)
-
+            print ("is_up", result.stdout)
             return result.stdout.strip().endswith(":activated")
         except Exception as ex:
             print (ex)
@@ -144,7 +158,10 @@ if __name__ == '__main__':
     print ("bidon", ":Exist" if nmcli.is_exist("bidon") else ":Unknown")
 
     # try to disable wifi => eth0 connexion needed for terminal
+    # need root privilege
     print ("disable wifi", ":Down" if nmcli.if_down(wifi) else ":Error")
-    print (wifi, ":UP" if nmcli.is_up(cn[0]) else ":Down")
+    print (wifi, ":UP" if nmcli.is_up(wifi) else ":Down")
     print ("enable wifi", ":UP" if nmcli.if_up(wifi) else ":Error")
+    print (wifi, ":UP" if nmcli.is_up(wifi) else ":Down")
+
     
